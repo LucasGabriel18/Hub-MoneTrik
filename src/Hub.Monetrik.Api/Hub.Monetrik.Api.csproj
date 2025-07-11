@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Hub.Monetrik.Domain\Hub.Monetrik.Domain.csproj" />
     <ProjectReference Include="..\Hub.Monetrik.Mediator\Hub.Monetrik.Mediator.csproj" />
   </ItemGroup>
 

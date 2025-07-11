@@ -1,5 +1,8 @@
+using Hub.Monetrik.Domain.Notifications;
+using Hub.Monetrik.Mediator.Interfaces;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Hub.Monetrik.Mediator.Services;
+using static Hub.Monetrik.Mediator.Interfaces.INotificationHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +15,8 @@ builder.Services.AddSwaggerGen();
 
 //Mediator DI
 builder.Services.AddScoped<IMediator, SimpleMediatorService>();
+builder.Services.AddScoped<INotificationHandler<Notification>, NotificationHandler>();
+
 
 var app = builder.Build();
 
