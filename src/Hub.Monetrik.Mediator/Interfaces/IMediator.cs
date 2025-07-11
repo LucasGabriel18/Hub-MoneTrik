@@ -1,4 +1,4 @@
-using static Hub.Monetrik.Mediator.Interfaces.IRequest;
+using static Hub.Monetrik.Mediator.Interfaces.IRequestTResponse;
 
 namespace Hub.Monetrik.Mediator.Interfaces.Mediator
 {

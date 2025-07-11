@@ -1,5 +1,7 @@
 
 
+using static Hub.Monetrik.Mediator.Interfaces.IRequestTResponse;
+
 namespace Hub.Monetrik.Mediator.Interfaces.Mediator
 {
     public interface IRequestHandler
