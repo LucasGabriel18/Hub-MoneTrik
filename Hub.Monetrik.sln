@@ -9,9 +9,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Monetrik.Api", "src\Hub
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Monetrik.Domain", "src\Hub.Monetrik.Domain\Hub.Monetrik.Domain.csproj", "{63B3986B-6042-4DBA-A225-B4B7232890D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.MoneTrik.Application", "src\Hub.MoneTrik.Application\Hub.MoneTrik.Application.csproj", "{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.MoneTrik.Infrastructure", "src\Hub.MoneTrik.Infrastructure\Hub.MoneTrik.Infrastructure.csproj", "{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hub.Monetrik.Mediator", "src\Hub.Monetrik.Mediator\Hub.Monetrik.Mediator.csproj", "{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,18 +47,6 @@ Global
 		{63B3986B-6042-4DBA-A225-B4B7232890D7}.Release|x64.Build.0 = Release|Any CPU
 		{63B3986B-6042-4DBA-A225-B4B7232890D7}.Release|x86.ActiveCfg = Release|Any CPU
 		{63B3986B-6042-4DBA-A225-B4B7232890D7}.Release|x86.Build.0 = Release|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Debug|x64.Build.0 = Debug|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Debug|x86.Build.0 = Debug|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Release|x64.ActiveCfg = Release|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Release|x64.Build.0 = Release|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Release|x86.ActiveCfg = Release|Any CPU
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71}.Release|x86.Build.0 = Release|Any CPU
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -71,6 +59,18 @@ Global
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}.Release|x64.Build.0 = Release|Any CPU
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}.Release|x86.ActiveCfg = Release|Any CPU
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D}.Release|x86.Build.0 = Release|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Debug|x64.Build.0 = Debug|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Debug|x86.Build.0 = Debug|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Release|x64.ActiveCfg = Release|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Release|x64.Build.0 = Release|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Release|x86.ActiveCfg = Release|Any CPU
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,7 +78,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{54A4FFF2-CE28-46E7-B5B8-8F6B10680439} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{63B3986B-6042-4DBA-A225-B4B7232890D7} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
-		{B1CDD0D7-A6FF-4C24-89AD-4CE241DA3C71} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 		{4DFBC9B3-8F25-4022-8EAC-966217E53E2D} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
+		{9B36EAA3-0D5D-400E-9A31-E3A8FAFD55BE} = {827E0CD3-B72D-47B6-A68D-7590B98EB39B}
 	EndGlobalSection
 EndGlobal
