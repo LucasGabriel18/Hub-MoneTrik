@@ -4,6 +4,6 @@ namespace Hub.MoneTrik.Infrastructure.Enums.Notifications
     {
         Information,
         Warning,
-        Erro
+        Error
     }
 }
