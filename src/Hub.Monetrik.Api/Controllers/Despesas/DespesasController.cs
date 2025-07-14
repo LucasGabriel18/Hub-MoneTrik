@@ -24,35 +24,24 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         [HttpPost("/cadastrar-despesa")]
         public async Task<IActionResult> CadastrarDespesas([FromBody] CadastrarDespesasCommand request)
         {
-            try
+            var result = await _mediator.Send(request);
+
+            if (_notifications.HasNotifications())
             {
-                var result = await _mediator.Send(request);
-
-                if (_notifications.HasNotifications())
-                {
-                    return BadRequest(new
-                    {
-                        success = false,
-                        errors = _notifications.GetNotifications().Select(n => n.Message).ToList()
-                    });
-                }
-
-                var response = CadastrarDespesaMapper.Map(result);
-
-                return Created(string.Empty, new
-                {
-                    success = true,
-                    data = response
-                });
-            }
-            catch (Exception)
-            {
+                var errors = _notifications.GetNotifications();
                 return BadRequest(new
                 {
                     success = false,
-                    errors = _notifications.GetNotifications().Select(n => n.Message).ToList()
+                    errors = errors.Select(n => new
+                    {
+                        message = n.Message,
+                        type = n.Type.ToString()
+                    })
                 });
             }
+
+            var response = CadastrarDespesaMapper.Map(result);
+            return Created(string.Empty, new { success = true, data = response });
         }
     }
 }

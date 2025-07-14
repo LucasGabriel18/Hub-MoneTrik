@@ -11,18 +11,20 @@ namespace Hub.Monetrik.Domain.Behaviors
     public class ValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
         private readonly IEnumerable<IValidator<TRequest>> _validators;
-        private readonly IMediator _mediator;
+        private readonly NotificationHandler _notifications;
 
         public ValidationBehavior(
             IEnumerable<IValidator<TRequest>> validators,
-            IMediator mediator)
+            NotificationHandler notifications)
         {
             _validators = validators;
-            _mediator = mediator;
+            _notifications = notifications;
         }
+
         public async Task<TResponse> Handle(TRequest request, Func<Task<TResponse>> next)
         {
-            if (!_validators.Any()) return await next();
+            if (!_validators.Any())
+                return await next();
 
             var context = new ValidationContext<TRequest>(request);
             var validationResults = await Task.WhenAll(
@@ -35,19 +37,17 @@ namespace Hub.Monetrik.Domain.Behaviors
 
             if (failures.Count > 0)
             {
-                // Publica apenas a mensagem de erro sem formatação adicional
                 foreach (var error in failures)
                 {
-                    await _mediator.Publish(new Notification(
-                        error.ErrorMessage,
-                        ENotificationType.Error
+                    await _notifications.Handle(new Notification(
+                        message: error.ErrorMessage,
+                        type: ENotificationType.Error
                     ));
                 }
-
-                throw new ValidationException(failures);
+                
+                return default;
             }
-
-
+            
             return await next();
         }
     }
