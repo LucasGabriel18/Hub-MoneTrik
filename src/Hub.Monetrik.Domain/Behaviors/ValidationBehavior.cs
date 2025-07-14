@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FluentValidation;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces;
@@ -34,13 +35,18 @@ namespace Hub.Monetrik.Domain.Behaviors
 
             if (failures.Count > 0)
             {
-                await _mediator.Publish(new Notification(
-                    string.Join(", ", failures.Select(x => x.ErrorMessage)),
-                    ENotificationType.Error // Usando o enum ENotificationType
-                ));
-                
+                // Publica apenas a mensagem de erro sem formatação adicional
+                foreach (var error in failures)
+                {
+                    await _mediator.Publish(new Notification(
+                        error.ErrorMessage,
+                        ENotificationType.Error
+                    ));
+                }
+
                 throw new ValidationException(failures);
             }
+
 
             return await next();
         }
