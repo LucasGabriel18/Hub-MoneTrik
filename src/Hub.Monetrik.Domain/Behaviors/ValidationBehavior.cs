@@ -1,9 +1,9 @@
 using System.Text.Json;
 using FluentValidation;
+using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
-using Hub.MoneTrik.Infrastructure.Enums.Notifications;
 using static Hub.Monetrik.Mediator.Interfaces.IPipelineBehavior;
 
 namespace Hub.Monetrik.Domain.Behaviors

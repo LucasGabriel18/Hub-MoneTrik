@@ -5,6 +5,8 @@ using Hub.Monetrik.Domain.Models.Entities.Despesa;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Hub.Monetrik.Mediator.Services;
+using Hub.MoneTrik.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 using static Hub.Monetrik.Mediator.Interfaces.INotificationHandler;
 using static Hub.Monetrik.Mediator.Interfaces.IPipelineBehavior;
 using static Hub.Monetrik.Mediator.Interfaces.Mediator.IRequestHandler;
@@ -32,6 +34,17 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavi
 
 // Validators
 builder.Services.AddScoped<IValidator<CadastrarDespesasCommand>, CadastrarDespesasValidator>();
+
+// Configuração do DbContext
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+                      Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+
+builder.Services.AddDbContext<HubMonetrikContext>(options =>
+    options.UseMySql(
+        connectionString,
+        ServerVersion.AutoDetect(connectionString)
+    )
+);
 
 var app = builder.Build();
 

@@ -1,5 +1,3 @@
-using Hub.MoneTrik.Infrastructure.Enums.Despesas;
-
 namespace Hub.Monetrik.Api.Responses.Despesas
 {
     public class CadastrarDespesaResponse

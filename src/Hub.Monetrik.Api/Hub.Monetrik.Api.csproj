@@ -9,11 +9,16 @@
   <ItemGroup>
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Hub.Monetrik.Domain\Hub.Monetrik.Domain.csproj" />
+    <ProjectReference Include="..\Hub.MoneTrik.Infrastructure\Hub.MoneTrik.Infrastructure.csproj" />
     <ProjectReference Include="..\Hub.Monetrik.Mediator\Hub.Monetrik.Mediator.csproj" />
   </ItemGroup>
 

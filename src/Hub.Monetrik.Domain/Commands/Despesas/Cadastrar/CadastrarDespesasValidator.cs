@@ -1,5 +1,5 @@
 using FluentValidation;
-using Hub.MoneTrik.Infrastructure.Enums.Despesas;
+using Hub.Monetrik.Domain.Enums.Despesas;
 
 namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
 {

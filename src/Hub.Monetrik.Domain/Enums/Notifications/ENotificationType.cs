@@ -1,4 +1,4 @@
-namespace Hub.MoneTrik.Infrastructure.Enums.Notifications
+namespace Hub.Monetrik.Domain.Enums.Notifications
 {
     public enum ENotificationType
     {

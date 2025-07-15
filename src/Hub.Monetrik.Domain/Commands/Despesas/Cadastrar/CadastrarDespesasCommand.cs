@@ -1,5 +1,5 @@
+using Hub.Monetrik.Domain.Enums.Despesas;
 using Hub.Monetrik.Domain.Models.Entities.Despesa;
-using Hub.MoneTrik.Infrastructure.Enums.Despesas;
 using static Hub.Monetrik.Mediator.Interfaces.IRequestTResponse;
 
 namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar

@@ -1,4 +1,4 @@
-namespace Hub.MoneTrik.Infrastructure.Enums.Despesas
+namespace Hub.Monetrik.Domain.Enums.Despesas
 {
     public enum ESituacaoDespesa
     {

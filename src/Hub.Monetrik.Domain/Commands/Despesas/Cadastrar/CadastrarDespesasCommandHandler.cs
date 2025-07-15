@@ -1,8 +1,8 @@
+using Hub.Monetrik.Domain.Enums.Despesas;
+using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Domain.Models.Entities.Despesa;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
-using Hub.MoneTrik.Infrastructure.Enums.Despesas;
-using Hub.MoneTrik.Infrastructure.Enums.Notifications;
 using static Hub.Monetrik.Mediator.Interfaces.Mediator.IRequestHandler;
 
 namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar

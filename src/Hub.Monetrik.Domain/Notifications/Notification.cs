@@ -1,5 +1,5 @@
+using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Mediator.Interfaces;
-using Hub.MoneTrik.Infrastructure.Enums.Notifications;
 
 namespace Hub.Monetrik.Domain.Notifications
 {
