@@ -21,16 +21,16 @@ namespace Hub.Monetrik.Domain.Models.Entities.Despesa
         [Column("tipo")]
         public string Tipo { get; set; }
 
-        [Column("valor_parcela")]
+        [Column("valor_parcela", TypeName = "decimal(18,2)")]
         public decimal ValorParcela { get; set; }
 
         [Column("numero_parcela")]
         public int NumeroParcela { get; set; }
 
         [Column("total_parcelas")]
-        public decimal TotalParcelas { get; set; }
+        public int TotalParcelas { get; set; }
 
-        [Column("valor_total")]
+        [Column("valor_total", TypeName = "decimal(18,2)")]
         public decimal ValorTotal { get; set; }
 
         [Column("data_vencimento")]

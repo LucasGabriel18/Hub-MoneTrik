@@ -1,11 +1,13 @@
 using FluentValidation;
 using Hub.Monetrik.Domain.Behaviors;
 using Hub.Monetrik.Domain.Commands.Despesas.Cadastrar;
+using Hub.Monetrik.Domain.Interfaces.Repository;
 using Hub.Monetrik.Domain.Models.Entities.Despesa;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Hub.Monetrik.Mediator.Services;
 using Hub.MoneTrik.Infrastructure.Context;
+using Hub.MoneTrik.Infrastructure.Repositories.Despesas;
 using Microsoft.EntityFrameworkCore;
 using static Hub.Monetrik.Mediator.Interfaces.INotificationHandler;
 using static Hub.Monetrik.Mediator.Interfaces.IPipelineBehavior;
@@ -35,14 +37,24 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavi
 // Validators
 builder.Services.AddScoped<IValidator<CadastrarDespesasCommand>, CadastrarDespesasValidator>();
 
+// Context - Repository
+builder.Services.AddScoped<IDespesasRepository, DespesasRepository>();
+
 // Configuração do DbContext
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
-                      Environment.GetEnvironmentVariable("ConnectionStrings__DefaultConnection");
+var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"] 
+    ?? "Server=localhost;Database=hubmonetrik;User=dev;Password=dev123;";
 
 builder.Services.AddDbContext<HubMonetrikContext>(options =>
     options.UseMySql(
         connectionString,
-        ServerVersion.AutoDetect(connectionString)
+        ServerVersion.AutoDetect(connectionString),
+        mysqlOptions => 
+        {
+            mysqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        }
     )
 );
 

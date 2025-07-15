@@ -4,6 +4,7 @@ using Hub.MoneTrik.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hub.MoneTrik.Infrastructure.Migrations
 {
     [DbContext(typeof(HubMonetrikContext))]
-    partial class HubMonetrikContextModelSnapshot : ModelSnapshot
+    [Migration("20250715181817_AtualizandoTipoDeDadosDaColunaValoresParaArredondamenteEInteiro")]
+    partial class AtualizandoTipoDeDadosDaColunaValoresParaArredondamenteEInteiro
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -68,11 +71,11 @@ namespace Hub.MoneTrik.Infrastructure.Migrations
                         .HasColumnName("total_parcelas");
 
                     b.Property<decimal>("ValorParcela")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(65,30)")
                         .HasColumnName("valor_parcela");
 
                     b.Property<decimal>("ValorTotal")
-                        .HasColumnType("decimal(18,2)")
+                        .HasColumnType("decimal(65,30)")
                         .HasColumnName("valor_total");
 
                     b.HasKey("Id");

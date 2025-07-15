@@ -33,6 +33,7 @@ namespace Hub.MoneTrik.Infrastructure.Context.Configurations
 
             builder.Property(x => x.ValorParcela)
                 .HasColumnName("valor_parcela")
+                .HasColumnType("decimal(18,2)")
                 .HasPrecision(18, 2)
                 .IsRequired();
 
@@ -47,6 +48,7 @@ namespace Hub.MoneTrik.Infrastructure.Context.Configurations
 
             builder.Property(x => x.ValorTotal)
                 .HasColumnName("valor_total")
+                .HasColumnType("decimal(18,2)")
                 .HasPrecision(18, 2)
                 .IsRequired();
 
