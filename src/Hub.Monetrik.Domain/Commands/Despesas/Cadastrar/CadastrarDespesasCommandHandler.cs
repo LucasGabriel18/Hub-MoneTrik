@@ -30,15 +30,15 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                         // ID será gerado pelo banco (auto-increment)
                         Titulo = request.Titulo,
                         Descricao = request.Descricao,
-                        Categoria = request.Categoria,
-                        Tipo = request.Tipo,
+                        Categoria = request.Categoria.ToString(),
+                        Tipo = request.Tipo.ToString(),
                         ValorTotal = request.ValorTotal,
                         ValorParcela = valorParcela,
                         NumeroParcela = i,
                         TotalParcelas = request.Parcelas,
                         DataInicioPagamento = dataPagamento,
                         DataRegistro = DateTime.Now,
-                        Situacao = ESituacaoDespesa.Pendente
+                        Situacao = ESituacaoDespesa.Pendente.ToString()
                     };
 
                     despesas.Add(despesa);

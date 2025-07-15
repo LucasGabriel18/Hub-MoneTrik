@@ -16,10 +16,10 @@ namespace Hub.Monetrik.Domain.Models.Entities.Despesa
         public string Descricao { get; set; }
 
         [Column("categoria")]
-        public ECategoriaDespesas Categoria { get; set; }
+        public string Categoria { get; set; }
 
         [Column("tipo")]
-        public ETipoDespesas Tipo { get; set; }
+        public string Tipo { get; set; }
 
         [Column("valor_parcela")]
         public decimal ValorParcela { get; set; }
@@ -40,6 +40,6 @@ namespace Hub.Monetrik.Domain.Models.Entities.Despesa
         public DateTime DataRegistro { get; set; } = DateTime.Now;
 
         [Column("situacao")]
-        public ESituacaoDespesa Situacao { get; set; } = ESituacaoDespesa.Pendente;
+        public string Situacao { get; set; }
     }
 }
