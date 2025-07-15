@@ -22,7 +22,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         }
 
         [HttpPost("/cadastrar-despesa")]
-        public async Task<IActionResult> CadastrarDespesas([FromBody] CadastrarDespesasCommand request)
+        public async Task<IActionResult> CadastrarDespesas([FromQuery] CadastrarDespesasCommand request)
         {
             var result = await _mediator.Send(request);
 
