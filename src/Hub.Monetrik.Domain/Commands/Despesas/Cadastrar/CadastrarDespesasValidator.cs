@@ -25,7 +25,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                 .IsInEnum()
                 .WithMessage("O valor digitado não corresponde ao esperado! Por favor escolha entre (Fixa ou Variavel)");
 
-            RuleFor(x => x.Parcelas)
+            RuleFor(x => x.QntdParcelas)
                 .GreaterThanOrEqualTo(1)
                 .WithMessage("O número mínimo de parcelas é 1")
                 .LessThanOrEqualTo(60)
@@ -47,13 +47,13 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                 .Must(data => data.Date >= DateTime.Now.Date)
                 .WithMessage("A data de pagamento deve ser igual ou maior que hoje");
 
-            RuleFor(x => x.ValorTotal)
+            RuleFor(x => x.ValorParcela)
                 .NotEmpty()
-                .WithMessage("O valor total é obrigatório")
+                .WithMessage("O valor da parcela é obrigatório")
                 .GreaterThan(0)
-                .WithMessage("O valor total deve ser maior que zero")
+                .WithMessage("O valor da parcela deve ser maior que zero")
                 .PrecisionScale(10, 2, false)
-                .WithMessage("O valor total não pode ter mais que 2 casas decimais");
+                .WithMessage("O valor da parcela não pode ter mais que 2 casas decimais");
         }
     }
 }

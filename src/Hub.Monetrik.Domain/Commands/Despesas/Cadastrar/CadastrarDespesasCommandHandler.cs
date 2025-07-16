@@ -22,11 +22,11 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
         {
             try
             {
-                var valorParcela = Math.Round(request.ValorTotal / request.Parcelas, 2);
+                var valorTotal = Math.Round(request.ValorParcela * request.QntdParcelas, 2);
                 var dataPagamento = request.DataInicioPagamento;
                 var despesas = new List<Despesa>();
 
-                for (int i = 1; i <= request.Parcelas; i++)
+                for (int i = 1; i <= request.QntdParcelas; i++)
                 {
                     var despesa = new Despesa
                     {
@@ -35,10 +35,10 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                         Descricao = request.Descricao,
                         Categoria = request.Categoria.ToString(),
                         Tipo = request.Tipo.ToString(),
-                        ValorTotal = Math.Round(request.ValorTotal, 2),
-                        ValorParcela = valorParcela,
+                        ValorTotal = valorTotal,
+                        ValorParcela = request.ValorParcela,
                         NumeroParcela = i,
-                        TotalParcelas = request.Parcelas,
+                        TotalParcelas = request.QntdParcelas,
                         DataInicioPagamento = dataPagamento.ToString("dd/MM/yyyy"),
                         DataRegistro = DateTime.Now,
                         Situacao = ESituacaoDespesa.Pendente.ToString()
