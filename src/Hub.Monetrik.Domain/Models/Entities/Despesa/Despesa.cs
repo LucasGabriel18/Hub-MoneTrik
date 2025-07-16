@@ -34,7 +34,7 @@ namespace Hub.Monetrik.Domain.Models.Entities.Despesa
         public decimal ValorTotal { get; set; }
 
         [Column("data_vencimento")]
-        public DateTime DataInicioPagamento { get; set; }
+        public string DataInicioPagamento { get; set; }
 
         [Column("data_registro")]
         public DateTime DataRegistro { get; set; } = DateTime.Now;

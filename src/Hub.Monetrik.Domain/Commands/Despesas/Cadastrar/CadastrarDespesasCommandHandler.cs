@@ -39,7 +39,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                         ValorParcela = valorParcela,
                         NumeroParcela = i,
                         TotalParcelas = request.Parcelas,
-                        DataInicioPagamento = dataPagamento,
+                        DataInicioPagamento = dataPagamento.ToString("dd/MM/yyyy"),
                         DataRegistro = DateTime.Now,
                         Situacao = ESituacaoDespesa.Pendente.ToString()
                     };

@@ -19,7 +19,7 @@ namespace Hub.Monetrik.Api.Mappers.Despesas
                 NumeroParcela = request.NumeroParcela,
                 ValorDaParcela = valorParcelaArredondado,
                 ValorTotal = request.ValorTotal,
-                DataPagamento = request.DataInicioPagamento.ToString("dd/MM/yyyy"),
+                DataPagamento = request.DataInicioPagamento,
                 Situacao = request.Situacao.ToString()
             };
         }
