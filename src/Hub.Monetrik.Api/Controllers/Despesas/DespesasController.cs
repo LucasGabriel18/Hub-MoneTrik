@@ -11,7 +11,6 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
     public class DespesasController : Controller
     {
         private readonly IMediator _mediator;
-        private readonly IDespesas _despesasService;
         private readonly NotificationHandler _notifications;
         public DespesasController(
             IMediator mediator,
@@ -20,7 +19,6 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         {
             _mediator = mediator;
             _notifications = notifications;
-            _despesasService = despesas;
         }
 
         [HttpPost("cadastrar-despesa")]
@@ -47,9 +45,9 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         }
 
         [HttpGet("buscar-despesas")]
-        public async Task<IActionResult> BuscarDespesas()
+        public async Task<IActionResult> BuscarDespesas(IDespesas _despesasService)
         {
-            var response = await _despesasService.GetDespesasRepository();
+            var request = await _despesasService.GetDespesasRepository();
 
             if (_notifications.HasNotifications())
             {
@@ -65,7 +63,23 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
                 });
             }
 
-            return Ok(new { success = true, data = response });            
+            var response = BuscarDespesasMapper.Map(request);
+
+            return Ok(new { success = true, data = response });
+        }
+
+        [HttpGet("buscar-despesa-por-id")]
+        public async Task<IActionResult> BuscarDespesaPorId([FromQuery] string id, IDespesas _despesasService)
+        {
+            
+            return Ok();
+        }    
+
+        [HttpPut("atualizar-situacao-despesa")]
+        public async Task<IActionResult> AtualizarSituacaoDespesa([FromQuery] string id)
+        {
+            
+            return Ok();
         }
     }
 }
