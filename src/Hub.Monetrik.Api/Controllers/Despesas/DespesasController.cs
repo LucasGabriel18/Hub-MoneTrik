@@ -2,6 +2,7 @@ using Hub.Monetrik.Api.Mappers.Despesas;
 using Hub.Monetrik.Domain.Commands.Despesas.Cadastrar;
 using Hub.Monetrik.Domain.Interfaces.Despesas;
 using Hub.Monetrik.Domain.Notifications;
+using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Microsoft.AspNetCore.Mvc;
 namespace Hub.Monetrik.Api.Controllers.Despesas
@@ -12,6 +13,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
     {
         private readonly IMediator _mediator;
         private readonly NotificationHandler _notifications;
+        private readonly IDespesas _despesasService;
         public DespesasController(
             IMediator mediator,
             NotificationHandler notifications,
@@ -19,6 +21,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         {
             _mediator = mediator;
             _notifications = notifications;
+            _despesasService = despesas;
         }
 
         [HttpPost("cadastrar-despesa")]
@@ -45,17 +48,25 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         }
 
         [HttpGet("buscar-despesas")]
-        public async Task<IActionResult> BuscarDespesas(IDespesas _despesasService)
+        public async Task<IActionResult> BuscarDespesas()
         {
-            var request = await _despesasService.GetDespesasRepository();
+            var request = await _despesasService.GetDespesasRepository();            
 
-            if (_notifications.HasNotifications())
+            if (request is null)
             {
-                var errors = _notifications.GetNotifications();
+                var notifications = _notifications.GetNotifications().ToList();
+                if (!notifications.Any())
+                {
+                    await _mediator.Publish(new Notification(
+                        "Erro ao buscar despesas",
+                        ENotificationType.Error));
+                    notifications = _notifications.GetNotifications().ToList();
+                }
+
                 return BadRequest(new
                 {
                     success = false,
-                    errors = errors.Select(n => new
+                    errors = notifications.Select(n => new
                     {
                         message = n.Message,
                         type = n.Type.ToString()
@@ -64,19 +75,42 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
             }
 
             var response = BuscarDespesasMapper.Map(request);
-
             return Ok(new { success = true, data = response });
         }
 
         [HttpGet("buscar-despesa-por-id")]
-        public async Task<IActionResult> BuscarDespesaPorId([FromQuery] string id, IDespesas _despesasService)
+        public async Task<IActionResult> BuscarDespesaPorId([FromQuery] int id)
         {
+            var request = await _despesasService.GetDespesaPorIdRepository(id);
             
-            return Ok();
+            if (request is null)
+            {
+                var notifications = _notifications.GetNotifications().ToList();
+                if (!notifications.Any())
+                {
+                    await _mediator.Publish(new Notification(
+                        $"Erro ao buscar despesa com ID {id}",
+                        ENotificationType.Error));
+                    notifications = _notifications.GetNotifications().ToList();
+                }
+
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = notifications.Select(n => new
+                    {
+                        message = n.Message,
+                        type = n.Type.ToString()
+                    })
+                });
+            }
+
+            var response = BuscarDespesaPorIdMapper.Map(request);
+            return Ok(new { success = true, data = response });
         }    
 
         [HttpPut("atualizar-situacao-despesa")]
-        public async Task<IActionResult> AtualizarSituacaoDespesa([FromQuery] string id)
+        public async Task<IActionResult> AtualizarSituacaoDespesa([FromQuery] int id)
         {
             
             return Ok();

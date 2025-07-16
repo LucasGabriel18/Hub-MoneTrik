@@ -32,8 +32,8 @@ builder.Services.AddScoped<IMediator, SimpleMediatorService>();
 builder.Services.AddScoped<IRequestHandler<CadastrarDespesasCommand, Despesa>, CadastrarDespesasCommandHandler>();
 
 // Notifications
-builder.Services.AddScoped<INotificationHandler<Notification>, NotificationHandler>();
 builder.Services.AddScoped<NotificationHandler>();
+builder.Services.AddScoped<INotificationHandler<Notification>>(sp => sp.GetRequiredService<NotificationHandler>());
 
 // Pipeline Behaviors
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));

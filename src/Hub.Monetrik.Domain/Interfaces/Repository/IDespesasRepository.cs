@@ -6,5 +6,6 @@ namespace Hub.Monetrik.Domain.Interfaces.Repository
     {
         Task CadastrarDespesasRepository(Despesa despesa);
         Task<List<Despesa>> BuscarDespesasRepository();
+        Task<Despesa> BuscarDespesaPorIdRepository(int id);
     }
 }
