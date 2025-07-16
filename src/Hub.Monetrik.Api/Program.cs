@@ -1,9 +1,11 @@
 using FluentValidation;
 using Hub.Monetrik.Domain.Behaviors;
 using Hub.Monetrik.Domain.Commands.Despesas.Cadastrar;
+using Hub.Monetrik.Domain.Interfaces.Despesas;
 using Hub.Monetrik.Domain.Interfaces.Repository;
 using Hub.Monetrik.Domain.Models.Entities.Despesa;
 using Hub.Monetrik.Domain.Notifications;
+using Hub.Monetrik.Domain.Services.Despesas.Buscar;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Hub.Monetrik.Mediator.Services;
 using Hub.MoneTrik.Infrastructure.Context;
@@ -22,6 +24,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Despesas Services
+builder.Services.AddScoped<IDespesas, BuscarDespesasService>();
 
 // Mediator e Handlers
 builder.Services.AddScoped<IMediator, SimpleMediatorService>();
