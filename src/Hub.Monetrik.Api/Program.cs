@@ -1,5 +1,6 @@
 using FluentValidation;
 using Hub.Monetrik.Domain.Behaviors;
+using Hub.Monetrik.Domain.Commands.Despesas.Atualizar;
 using Hub.Monetrik.Domain.Commands.Despesas.Cadastrar;
 using Hub.Monetrik.Domain.Interfaces.Despesas;
 using Hub.Monetrik.Domain.Interfaces.Repository;
@@ -30,6 +31,7 @@ builder.Services.AddScoped<IDespesas, BuscarDespesasService>();
 // Mediator e Handlers
 builder.Services.AddScoped<IMediator, SimpleMediatorService>();
 builder.Services.AddScoped<IRequestHandler<CadastrarDespesasCommand, Despesa>, CadastrarDespesasCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AtualizarSituacaoDespesaCommand, Despesa>, AtualizarSituacaoDespesaCommandHandler>();
 
 // Notifications
 builder.Services.AddScoped<NotificationHandler>();
@@ -40,6 +42,7 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavi
 
 // Validators
 builder.Services.AddScoped<IValidator<CadastrarDespesasCommand>, CadastrarDespesasValidator>();
+builder.Services.AddScoped<IValidator<AtualizarSituacaoDespesaCommand>, AtualizarSituacaoDespesaValidator>();
 
 // Context - Repository
 builder.Services.AddScoped<IDespesasRepository, DespesasRepository>();
