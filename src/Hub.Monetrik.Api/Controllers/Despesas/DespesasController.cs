@@ -51,7 +51,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         [HttpGet("buscar-despesas")]
         public async Task<IActionResult> BuscarDespesas()
         {
-            var request = await _despesasService.GetDespesasRepository();            
+            var request = await _despesasService.GetDespesasRepository();
 
             if (request is null)
             {
@@ -83,7 +83,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         public async Task<IActionResult> BuscarDespesaPorId([FromQuery] int id)
         {
             var request = await _despesasService.GetDespesaPorIdRepository(id);
-            
+
             if (request is null)
             {
                 var notifications = _notifications.GetNotifications().ToList();
@@ -108,7 +108,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
 
             var response = BuscarDespesaPorIdMapper.Map(request);
             return Ok(new { success = true, data = response });
-        }    
+        }
 
         [HttpPut("atualizar-situacao-despesa")]
         public async Task<IActionResult> AtualizarSituacaoDespesa([FromQuery] AtualizarSituacaoDespesaCommand request)
@@ -131,6 +131,28 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
 
             var response = AtualizarSituacaoDespesaMapper.Map(result);
             return Ok(new { success = true, data = response });
+        }
+
+        [HttpPut("atualizar-parcelas")]
+        public async Task<IActionResult> AtualizarParcelas([FromQuery] AtualizarParcelaIndividualCommand request)
+        {
+            var result = await _mediator.Send(request);        
+
+            if (_notifications.HasNotifications())
+            {
+                var errors = _notifications.GetNotifications();
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = errors.Select(n => new
+                    {
+                        message = n.Message,
+                        type = n.Type.ToString()
+                    })
+                });
+            }
+
+            return Ok(new { success = true, data = result });
         }
     }
 }

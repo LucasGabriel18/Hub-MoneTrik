@@ -32,6 +32,7 @@ builder.Services.AddScoped<IDespesas, BuscarDespesasService>();
 builder.Services.AddScoped<IMediator, SimpleMediatorService>();
 builder.Services.AddScoped<IRequestHandler<CadastrarDespesasCommand, Despesa>, CadastrarDespesasCommandHandler>();
 builder.Services.AddScoped<IRequestHandler<AtualizarSituacaoDespesaCommand, Despesa>, AtualizarSituacaoDespesaCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AtualizarParcelaIndividualCommand, List<Despesa>>, AtualizarParcelaIndividualCommandHandler>();
 
 // Notifications
 builder.Services.AddScoped<NotificationHandler>();
@@ -43,6 +44,7 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavi
 // Validators
 builder.Services.AddScoped<IValidator<CadastrarDespesasCommand>, CadastrarDespesasValidator>();
 builder.Services.AddScoped<IValidator<AtualizarSituacaoDespesaCommand>, AtualizarSituacaoDespesaValidator>();
+builder.Services.AddScoped<IValidator<AtualizarParcelaIndividualCommand>, AtualizarParcelaIndividualValidator>();
 
 // Context - Repository
 builder.Services.AddScoped<IDespesasRepository, DespesasRepository>();

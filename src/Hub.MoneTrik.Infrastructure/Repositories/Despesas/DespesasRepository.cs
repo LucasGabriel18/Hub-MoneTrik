@@ -12,7 +12,14 @@ namespace Hub.MoneTrik.Infrastructure.Repositories.Despesas
             _context = context;
         }
 
-        public async Task<Despesa> AtualizarSituacaoDespesa(Despesa despesa)
+        public async Task<Despesa> AtualizarSituacaoDespesaRepository(Despesa despesa)
+        {
+            _context.Update(despesa);
+            await _context.SaveChangesAsync();
+            return despesa;
+        }
+
+        public async Task<Despesa> AtualizarValorIndividualParcelaRepository(Despesa despesa)
         {
             _context.Update(despesa);
             await _context.SaveChangesAsync();
@@ -21,14 +28,19 @@ namespace Hub.MoneTrik.Infrastructure.Repositories.Despesas
 
         public async Task<Despesa> BuscarDespesaPorIdRepository(int id)
         {
-            var response = await _context.Despesas.FirstOrDefaultAsync(x => x.Id == id);
-            return response;
+            return await _context.Despesas.FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Despesa>> BuscarDespesasRepository()
         {
-            var response = await _context.Despesas.ToListAsync();
-            return response;
+            return await _context.Despesas.ToListAsync();;
+        }
+
+        public async Task<List<Despesa>> BuscarParcelasFuturasPorTituloRepository(string titulo)
+        {
+            return await _context.Despesas
+                .Where(d => d.Titulo == titulo)
+                .ToListAsync();            
         }
 
         public async Task CadastrarDespesasRepository(Despesa despesa)

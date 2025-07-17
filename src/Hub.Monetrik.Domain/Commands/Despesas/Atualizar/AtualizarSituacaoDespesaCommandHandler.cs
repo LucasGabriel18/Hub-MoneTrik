@@ -40,7 +40,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Atualizar
 
                 despesa.Situacao = request.NovaSituacao;
 
-                var response = await _despesasRepository.AtualizarSituacaoDespesa(despesa);
+                var response = await _despesasRepository.AtualizarSituacaoDespesaRepository(despesa);
 
                 return response;
             }
