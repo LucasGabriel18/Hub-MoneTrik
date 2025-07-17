@@ -1,9 +1,12 @@
 using FluentValidation;
 using Hub.Monetrik.Domain.Behaviors;
+using Hub.Monetrik.Domain.Commands.Despesas.Atualizar;
 using Hub.Monetrik.Domain.Commands.Despesas.Cadastrar;
+using Hub.Monetrik.Domain.Interfaces.Despesas;
 using Hub.Monetrik.Domain.Interfaces.Repository;
 using Hub.Monetrik.Domain.Models.Entities.Despesa;
 using Hub.Monetrik.Domain.Notifications;
+using Hub.Monetrik.Domain.Services.Despesas.Buscar;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Hub.Monetrik.Mediator.Services;
 using Hub.MoneTrik.Infrastructure.Context;
@@ -22,20 +25,24 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+//Despesas Services
+builder.Services.AddScoped<IDespesas, BuscarDespesasService>();
 
 // Mediator e Handlers
 builder.Services.AddScoped<IMediator, SimpleMediatorService>();
 builder.Services.AddScoped<IRequestHandler<CadastrarDespesasCommand, Despesa>, CadastrarDespesasCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AtualizarSituacaoDespesaCommand, Despesa>, AtualizarSituacaoDespesaCommandHandler>();
 
 // Notifications
-builder.Services.AddScoped<INotificationHandler<Notification>, NotificationHandler>();
 builder.Services.AddScoped<NotificationHandler>();
+builder.Services.AddScoped<INotificationHandler<Notification>>(sp => sp.GetRequiredService<NotificationHandler>());
 
 // Pipeline Behaviors
 builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
 // Validators
 builder.Services.AddScoped<IValidator<CadastrarDespesasCommand>, CadastrarDespesasValidator>();
+builder.Services.AddScoped<IValidator<AtualizarSituacaoDespesaCommand>, AtualizarSituacaoDespesaValidator>();
 
 // Context - Repository
 builder.Services.AddScoped<IDespesasRepository, DespesasRepository>();
