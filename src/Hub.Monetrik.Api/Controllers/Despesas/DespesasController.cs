@@ -131,28 +131,6 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
 
             var response = AtualizarSituacaoDespesaMapper.Map(result);
             return Ok(new { success = true, data = response });
-        }
-
-        [HttpPut("atualizar-parcelas")]
-        public async Task<IActionResult> AtualizarParcelas([FromQuery] AtualizarParcelaIndividualCommand request)
-        {
-            var result = await _mediator.Send(request);        
-
-            if (_notifications.HasNotifications())
-            {
-                var errors = _notifications.GetNotifications();
-                return BadRequest(new
-                {
-                    success = false,
-                    errors = errors.Select(n => new
-                    {
-                        message = n.Message,
-                        type = n.Type.ToString()
-                    })
-                });
-            }
-
-            return Ok(new { success = true, data = result });
-        }
+        }        
     }
 }
