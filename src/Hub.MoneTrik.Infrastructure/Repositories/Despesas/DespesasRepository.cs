@@ -26,6 +26,17 @@ namespace Hub.MoneTrik.Infrastructure.Repositories.Despesas
             return despesa;
         }
 
+        public async Task<Despesa> AtualizarValorTotalParcelasRepository(int id, decimal novoValorParcela)
+        {
+            var entidade = await _context.Despesas.FirstOrDefaultAsync(x => x.Id == id);
+            entidade.ValorTotal = novoValorParcela * entidade.TotalParcelas;
+                        
+            _context.Update(entidade);
+            await _context.SaveChangesAsync();
+
+            return entidade;
+        }
+
         public async Task<Despesa> BuscarDespesaPorIdRepository(int id)
         {
             return await _context.Despesas.FirstOrDefaultAsync(x => x.Id == id);
