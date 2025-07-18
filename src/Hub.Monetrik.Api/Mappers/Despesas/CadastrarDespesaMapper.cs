@@ -1,26 +1,23 @@
+using Hub.Monetrik.Api.Mappers.Parcelas;
 using Hub.Monetrik.Api.Responses.Despesas;
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
 
 namespace Hub.Monetrik.Api.Mappers.Despesas
 {
     public class CadastrarDespesaMapper
     {
-        public static CadastrarDespesaResponse Map(Despesa request)
+        public static CadastrarDespesaResponse Map(Despesa despesa) 
         {
-            var valorParcelaArredondado = Math.Round(request.ValorParcela, 2);
-
             return new CadastrarDespesaResponse
             {
-                Titulo = request.Titulo,
-                Descricao = request.Descricao,
-                Categoria = request.Categoria.ToString(),
-                Tipo = request.Tipo.ToString(),
-                TotalDeParcelas = request.TotalParcelas,
-                NumeroParcela = request.NumeroParcela,
-                ValorDaParcela = valorParcelaArredondado,
-                ValorTotal = request.ValorTotal,
-                DataPagamento = request.DataInicioPagamento,
-                Situacao = request.Situacao.ToString()
+                Id = despesa.Id,
+                Titulo = despesa.Titulo,
+                Descricao = despesa.Descricao,
+                Categoria = despesa.Categoria,
+                Tipo = despesa.Tipo,
+                TotalParcelas = despesa.TotalParcelas,
+                ValorTotal = despesa.ValorTotal,
+                Parcelas = ParcelasMapper.MapList(despesa.Parcelas.ToList())
             };
         }
     }

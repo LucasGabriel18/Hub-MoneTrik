@@ -1,4 +1,4 @@
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -31,19 +31,8 @@ namespace Hub.MoneTrik.Infrastructure.Context.Configurations
                 .HasColumnName("tipo")
                 .IsRequired();
 
-            builder.Property(x => x.ValorParcela)
-                .HasColumnName("valor_parcela")
-                .HasColumnType("decimal(18,2)")
-                .HasPrecision(18, 2)
-                .IsRequired();
-
-            builder.Property(x => x.NumeroParcela)
-                .HasColumnName("numero_parcela")
-                .IsRequired();
-
             builder.Property(x => x.TotalParcelas)
                 .HasColumnName("total_parcelas")
-                .HasPrecision(18, 2)
                 .IsRequired();
 
             builder.Property(x => x.ValorTotal)
@@ -52,17 +41,14 @@ namespace Hub.MoneTrik.Infrastructure.Context.Configurations
                 .HasPrecision(18, 2)
                 .IsRequired();
 
-            builder.Property(x => x.DataInicioPagamento)
-                .HasColumnName("data_vencimento")
-                .IsRequired();
-
             builder.Property(x => x.DataRegistro)
                 .HasColumnName("data_registro")
                 .IsRequired();
 
-            builder.Property(x => x.Situacao)
-                .HasColumnName("situacao")
-                .IsRequired();
+            // Relacionamento
+            builder.HasMany(d => d.Parcelas)
+                .WithOne(p => p.Despesa)
+                .HasForeignKey(p => p.DespesaId);
         }
     }
 }

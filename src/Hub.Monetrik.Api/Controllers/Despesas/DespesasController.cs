@@ -5,7 +5,6 @@ using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Microsoft.AspNetCore.Mvc;
-using Hub.Monetrik.Domain.Commands.Despesas.Atualizar;
 namespace Hub.Monetrik.Api.Controllers.Despesas
 {
     [ApiController]
@@ -53,29 +52,24 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         {
             var request = await _despesasService.GetDespesasRepository();
 
-            if (request is null)
+            if (!request.Any())
             {
-                var notifications = _notifications.GetNotifications().ToList();
-                if (!notifications.Any())
-                {
-                    await _mediator.Publish(new Notification(
-                        "Erro ao buscar despesas",
-                        ENotificationType.Error));
-                    notifications = _notifications.GetNotifications().ToList();
-                }
-
+                await _mediator.Publish(new Notification(
+                    "Nenhuma despesa encontrada",
+                    ENotificationType.Warning));
+                
                 return BadRequest(new
                 {
                     success = false,
-                    errors = notifications.Select(n => new
+                    errors = _notifications.GetNotifications().Select(n => new
                     {
                         message = n.Message,
                         type = n.Type.ToString()
                     })
                 });
             }
-
-            var response = BuscarDespesasMapper.Map(request);
+            
+            var response = BuscarDespesasMapper.Map(request.ToList());
             return Ok(new { success = true, data = response });
         }
 
@@ -107,29 +101,6 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
             }
 
             var response = BuscarDespesaPorIdMapper.Map(request);
-            return Ok(new { success = true, data = response });
-        }
-
-        [HttpPut("atualizar-situacao-despesa")]
-        public async Task<IActionResult> AtualizarSituacaoDespesa([FromQuery] AtualizarSituacaoDespesaCommand request)
-        {
-            var result = await _mediator.Send(request);
-
-            if (_notifications.HasNotifications())
-            {
-                var errors = _notifications.GetNotifications();
-                return BadRequest(new
-                {
-                    success = false,
-                    errors = errors.Select(n => new
-                    {
-                        message = n.Message,
-                        type = n.Type.ToString()
-                    })
-                });
-            }
-
-            var response = AtualizarSituacaoDespesaMapper.Map(result);
             return Ok(new { success = true, data = response });
         }        
     }

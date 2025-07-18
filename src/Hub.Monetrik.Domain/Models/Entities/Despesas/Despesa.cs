@@ -1,11 +1,16 @@
 using System.ComponentModel.DataAnnotations.Schema;
-using Hub.Monetrik.Domain.Enums.Despesas;
+using Hub.Monetrik.Domain.Models.Entities.Parcelas;
 
-namespace Hub.Monetrik.Domain.Models.Entities.Despesa
+namespace Hub.Monetrik.Domain.Models.Entities.Despesas
 {
     [Table("despesas")]
     public class Despesa
     {
+        public Despesa()
+        {
+            Parcelas = [];
+        }
+
         [Column("id")]
         public int Id { get; private set; }
 
@@ -21,12 +26,6 @@ namespace Hub.Monetrik.Domain.Models.Entities.Despesa
         [Column("tipo")]
         public string Tipo { get; set; }
 
-        [Column("valor_parcela", TypeName = "decimal(18,2)")]
-        public decimal ValorParcela { get; set; }
-
-        [Column("numero_parcela")]
-        public int NumeroParcela { get; set; }
-
         [Column("total_parcelas")]
         public int TotalParcelas { get; set; }
 
@@ -39,7 +38,7 @@ namespace Hub.Monetrik.Domain.Models.Entities.Despesa
         [Column("data_registro")]
         public DateTime DataRegistro { get; set; } = DateTime.Now;
 
-        [Column("situacao")]
-        public string Situacao { get; set; }
+        // Relacionamento com parcelas
+        public virtual ICollection<Parcela> Parcelas { get; set; }
     }
 }

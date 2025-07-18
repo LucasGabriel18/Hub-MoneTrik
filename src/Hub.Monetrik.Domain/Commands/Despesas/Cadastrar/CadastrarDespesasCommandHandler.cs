@@ -1,7 +1,8 @@
 using Hub.Monetrik.Domain.Enums.Despesas;
 using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Domain.Interfaces.Repository;
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
+using Hub.Monetrik.Domain.Models.Entities.Parcelas;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using static Hub.Monetrik.Mediator.Interfaces.Mediator.IRequestHandler;
@@ -12,10 +13,16 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
     {
         private readonly IMediator _mediator;
         private readonly IDespesasRepository _despesasRepository;
-        public CadastrarDespesasCommandHandler(IMediator mediator, IDespesasRepository repository)
+        private readonly IParcelasRepository _parcelasRepository;
+        
+        public CadastrarDespesasCommandHandler(
+            IMediator mediator, 
+            IDespesasRepository despesasRepository,
+            IParcelasRepository parcelasRepository)
         {
             _mediator = mediator;
-            _despesasRepository = repository;
+            _despesasRepository = despesasRepository;
+            _parcelasRepository = parcelasRepository;
         }
 
         public async Task<Despesa> Handle(CadastrarDespesasCommand request)
@@ -23,30 +30,37 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
             try
             {
                 var valorTotal = Math.Round(request.ValorParcela * request.QntdParcelas, 2);
-                var dataPagamento = request.DataInicioPagamento;
-                var despesas = new List<Despesa>();
+                
+                // Criar a despesa principal
+                var despesa = new Despesa
+                {
+                    Titulo = request.Titulo,
+                    Descricao = request.Descricao,
+                    Categoria = request.Categoria.ToString(),
+                    Tipo = request.Tipo.ToString(),
+                    ValorTotal = valorTotal,
+                    TotalParcelas = request.QntdParcelas,
+                    DataRegistro = DateTime.Now
+                };
 
+                // Salvar a despesa principal para obter o ID
+                var despesaSalva = await _despesasRepository.CadastrarDespesasRepository(despesa);
+                
+                // Criar as parcelas
+                var dataPagamento = request.DataInicioPagamento;
+                
                 for (int i = 1; i <= request.QntdParcelas; i++)
                 {
-                    var despesa = new Despesa
+                    var parcela = new Parcela
                     {
-                        // ID será gerado pelo banco (auto-increment)
-                        Titulo = request.Titulo,
-                        Descricao = request.Descricao,
-                        Categoria = request.Categoria.ToString(),
-                        Tipo = request.Tipo.ToString(),
-                        ValorTotal = valorTotal,
-                        ValorParcela = request.ValorParcela,
+                        DespesaId = despesaSalva.Id,
                         NumeroParcela = i,
-                        TotalParcelas = request.QntdParcelas,
-                        DataInicioPagamento = dataPagamento.ToString("dd/MM/yyyy"),
-                        DataRegistro = DateTime.Now,
+                        ValorParcela = request.ValorParcela,
+                        DataVencimento = dataPagamento.ToString("dd/MM/yyyy"),
                         Situacao = ESituacaoDespesa.Pendente.ToString()
                     };
 
-                    despesas.Add(despesa);
-                    
-                    await _despesasRepository.CadastrarDespesasRepository(despesa);
+                    await _parcelasRepository.CadastrarParcelaRepository(parcela);
                     
                     // Incrementa a data para próxima parcela
                     if (request.Tipo == ETipoDespesas.Fixa)
@@ -55,11 +69,14 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                     }
                 }
 
+                // Carregar a despesa completa com suas parcelas
+                var despesaCompleta = await _despesasRepository.BuscarDespesaPorIdRepository(despesaSalva.Id);
+
                 await _mediator.Publish(new Notification(
                     "Despesa(s) cadastrada(s) com sucesso!",
                     ENotificationType.Information));
                 
-                return despesas.First();
+                return despesaCompleta;
             }
             catch (Exception ex)
             {
