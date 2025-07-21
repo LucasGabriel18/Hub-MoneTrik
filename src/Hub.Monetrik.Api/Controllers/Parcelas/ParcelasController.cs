@@ -51,12 +51,12 @@ namespace Hub.Monetrik.Api.Controllers.Parcelas
             var response = ParcelasMapper.MapList(parcelas);
             return Ok(new { success = true, data = response });
         }
-        
+
         [HttpPut("atualizar-situacao")]
         public async Task<IActionResult> AtualizarSituacaoParcela([FromQuery] AtualizarSituacaoParcelaCommand request)
         {
             var result = await _mediator.Send(request);
-            
+
             if (_notifications.HasNotifications())
             {
                 var errors = _notifications.GetNotifications();
@@ -70,7 +70,30 @@ namespace Hub.Monetrik.Api.Controllers.Parcelas
                     })
                 });
             }
-            
+
+            var response = ParcelasMapper.Map(result);
+            return Ok(new { success = true, data = response });
+        }
+        
+        [HttpPut("atualizar-valor-parcela")]
+        public async Task<IActionResult> AtualizarValorParcela([FromQuery] AtualizarValorParcelaCommand request)
+        {
+            var result = await _mediator.Send(request);
+
+            if (_notifications.HasNotifications())
+            {
+                var errors = _notifications.GetNotifications();
+                return BadRequest(new
+                {
+                    success = false,
+                    errors = errors.Select(n => new
+                    {
+                        message = n.Message,
+                        type = n.Type.ToString()
+                    })
+                });
+            }
+
             var response = ParcelasMapper.Map(result);
             return Ok(new { success = true, data = response });
         }
