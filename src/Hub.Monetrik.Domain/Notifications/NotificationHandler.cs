@@ -21,14 +21,17 @@ namespace Hub.Monetrik.Domain.Notifications
             return Task.CompletedTask;
         }
 
-        public List<Notification> GetNotifications() 
+        public List<Notification> GetNotifications()
             => _notifications;
 
-        public bool HasNotifications() 
+        public bool HasNotifications()
             => _notifications.Any();
 
-        public void ClearNotifications() 
+        public void ClearNotifications()
             => _notifications.Clear();
+
+        public void GetTypeNotification()
+            => _notifications.Select(x => x.Type);
     }
     
 }

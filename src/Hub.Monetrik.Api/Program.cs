@@ -1,16 +1,18 @@
 using FluentValidation;
 using Hub.Monetrik.Domain.Behaviors;
-using Hub.Monetrik.Domain.Commands.Despesas.Atualizar;
 using Hub.Monetrik.Domain.Commands.Despesas.Cadastrar;
+using Hub.Monetrik.Domain.Commands.Parcelas.Atualizar;
 using Hub.Monetrik.Domain.Interfaces.Despesas;
 using Hub.Monetrik.Domain.Interfaces.Repository;
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
+using Hub.Monetrik.Domain.Models.Entities.Parcelas;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Domain.Services.Despesas.Buscar;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Hub.Monetrik.Mediator.Services;
 using Hub.MoneTrik.Infrastructure.Context;
 using Hub.MoneTrik.Infrastructure.Repositories.Despesas;
+using Hub.MoneTrik.Infrastructure.Repositories.Parcelas;
 using Microsoft.EntityFrameworkCore;
 using static Hub.Monetrik.Mediator.Interfaces.INotificationHandler;
 using static Hub.Monetrik.Mediator.Interfaces.IPipelineBehavior;
@@ -31,7 +33,7 @@ builder.Services.AddScoped<IDespesas, BuscarDespesasService>();
 // Mediator e Handlers
 builder.Services.AddScoped<IMediator, SimpleMediatorService>();
 builder.Services.AddScoped<IRequestHandler<CadastrarDespesasCommand, Despesa>, CadastrarDespesasCommandHandler>();
-builder.Services.AddScoped<IRequestHandler<AtualizarSituacaoDespesaCommand, Despesa>, AtualizarSituacaoDespesaCommandHandler>();
+builder.Services.AddScoped<IRequestHandler<AtualizarSituacaoParcelaCommand, Parcela>, AtualizarSituacaoParcelaCommandHandler>();
 
 // Notifications
 builder.Services.AddScoped<NotificationHandler>();
@@ -42,10 +44,10 @@ builder.Services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavi
 
 // Validators
 builder.Services.AddScoped<IValidator<CadastrarDespesasCommand>, CadastrarDespesasValidator>();
-builder.Services.AddScoped<IValidator<AtualizarSituacaoDespesaCommand>, AtualizarSituacaoDespesaValidator>();
 
 // Context - Repository
 builder.Services.AddScoped<IDespesasRepository, DespesasRepository>();
+builder.Services.AddScoped<IParcelasRepository, ParcelasRepository>();
 
 // Configuração do DbContext
 var connectionString = builder.Configuration["ConnectionStrings:DefaultConnection"] 

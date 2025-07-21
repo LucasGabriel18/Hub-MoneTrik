@@ -41,7 +41,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                 })
                 .WithMessage("Apenas despesas fixas podem ser parceladas");
 
-            RuleFor(x => x.DataInicioPagamento)
+            RuleFor(x => x.DataPagamento)
                 .NotEmpty()
                 .WithMessage("A data de pagamento é obrigatória")
                 .Must(data => data.Date >= DateTime.Now.Date)

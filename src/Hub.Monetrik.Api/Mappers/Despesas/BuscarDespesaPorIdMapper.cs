@@ -1,5 +1,6 @@
+using Hub.Monetrik.Api.Mappers.Parcelas;
 using Hub.Monetrik.Api.Responses.Despesas;
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
 
 namespace Hub.Monetrik.Api.Mappers.Despesas
 {
@@ -14,13 +15,10 @@ namespace Hub.Monetrik.Api.Mappers.Despesas
                 Descricao = despesa.Descricao,
                 Categoria = despesa.Categoria,
                 Tipo = despesa.Tipo,
-                ValorParcela = despesa.ValorParcela,
-                NumeroParcela = despesa.NumeroParcela,
-                TotalParcelas = despesa.TotalParcelas,
                 ValorTotal = despesa.ValorTotal,
-                DataPagamento = despesa.DataInicioPagamento,
+                TotalParcelas = despesa.TotalParcelas,
                 DataRegistro = despesa.DataRegistro.ToString("dd/MM/yyyy"),
-                Situacao = despesa.Situacao,
+                Parcelas = ParcelasMapper.MapList(despesa.Parcelas.ToList())
             };
         }
     }
