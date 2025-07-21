@@ -47,7 +47,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                 var despesaSalva = await _despesasRepository.CadastrarDespesasRepository(despesa);
                 
                 // Criar as parcelas
-                var dataPagamento = request.DataInicioPagamento;
+                var dataPagamento = request.DataPagamento;
                 
                 for (int i = 1; i <= request.QntdParcelas; i++)
                 {
