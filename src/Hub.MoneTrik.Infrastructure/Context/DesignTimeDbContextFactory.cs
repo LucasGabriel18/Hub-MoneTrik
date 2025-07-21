@@ -1,9 +1,8 @@
-using Hub.MoneTrik.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using Microsoft.Extensions.Configuration;
 
-namespace Hub.MoneTrik.Infrastructure
+namespace Hub.MoneTrik.Infrastructure.Context
 {
     public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<HubMonetrikContext>
     {

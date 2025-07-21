@@ -1,6 +1,5 @@
 using Hub.Monetrik.Api.Responses.Despesas;
 using Hub.Monetrik.Domain.Models.Entities.Despesas;
-using System.Linq;
 
 namespace Hub.Monetrik.Api.Mappers.Despesas
 {

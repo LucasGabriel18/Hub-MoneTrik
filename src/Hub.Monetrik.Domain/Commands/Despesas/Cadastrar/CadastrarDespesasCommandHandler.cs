@@ -31,7 +31,6 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
             {
                 var valorTotal = Math.Round(request.ValorParcela * request.QntdParcelas, 2);
                 
-                // Criar a despesa principal
                 var despesa = new Despesa
                 {
                     Titulo = request.Titulo,
@@ -43,10 +42,8 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                     DataRegistro = DateTime.Now
                 };
 
-                // Salvar a despesa principal para obter o ID
                 var despesaSalva = await _despesasRepository.CadastrarDespesasRepository(despesa);
                 
-                // Criar as parcelas
                 var dataPagamento = request.DataPagamento;
                 
                 for (int i = 1; i <= request.QntdParcelas; i++)
@@ -62,19 +59,13 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
 
                     await _parcelasRepository.CadastrarParcelaRepository(parcela);
                     
-                    // Incrementa a data para próxima parcela
                     if (request.Tipo == ETipoDespesas.Fixa)
                     {
                         dataPagamento = dataPagamento.AddMonths(1);
                     }
                 }
 
-                // Carregar a despesa completa com suas parcelas
                 var despesaCompleta = await _despesasRepository.BuscarDespesaPorIdRepository(despesaSalva.Id);
-
-                await _mediator.Publish(new Notification(
-                    "Despesa(s) cadastrada(s) com sucesso!",
-                    ENotificationType.Information));
                 
                 return despesaCompleta;
             }

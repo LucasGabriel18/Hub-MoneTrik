@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Hub.Monetrik.Domain.Models.Entities.Parcelas;
 using static Hub.Monetrik.Mediator.Interfaces.IRequestTResponse;
 
