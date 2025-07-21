@@ -1,4 +1,3 @@
-using Hub.Monetrik.Mediator.Interfaces;
 using Microsoft.Extensions.Logging;
 using static Hub.Monetrik.Mediator.Interfaces.IPipelineBehavior;
 namespace Hub.Monetrik.Domain.Behaviors

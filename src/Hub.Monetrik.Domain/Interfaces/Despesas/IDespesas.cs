@@ -1,4 +1,4 @@
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
 namespace Hub.Monetrik.Domain.Interfaces.Despesas
 {
     public interface IDespesas

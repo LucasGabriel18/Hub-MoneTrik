@@ -4,6 +4,7 @@ using Hub.MoneTrik.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Hub.MoneTrik.Infrastructure.Migrations
 {
     [DbContext(typeof(HubMonetrikContext))]
-    partial class HubMonetrikContextModelSnapshot : ModelSnapshot
+    [Migration("20250718185523_CriacaoTabelaParcelas")]
+    partial class CriacaoTabelaParcelas
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace Hub.MoneTrik.Infrastructure.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Despesas.Despesa", b =>
+            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Despesa.Despesa", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -34,6 +37,10 @@ namespace Hub.MoneTrik.Infrastructure.Migrations
                     b.Property<string>("Categoria")
                         .HasColumnType("longtext")
                         .HasColumnName("categoria");
+
+                    b.Property<string>("DataInicioPagamento")
+                        .HasColumnType("longtext")
+                        .HasColumnName("data_vencimento");
 
                     b.Property<DateTime>("DataRegistro")
                         .HasColumnType("datetime(6)")
@@ -64,7 +71,7 @@ namespace Hub.MoneTrik.Infrastructure.Migrations
                     b.ToTable("despesas");
                 });
 
-            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Parcelas.Parcela", b =>
+            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Despesa.Parcela", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -100,9 +107,9 @@ namespace Hub.MoneTrik.Infrastructure.Migrations
                     b.ToTable("parcelas");
                 });
 
-            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Parcelas.Parcela", b =>
+            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Despesa.Parcela", b =>
                 {
-                    b.HasOne("Hub.Monetrik.Domain.Models.Entities.Despesas.Despesa", "Despesa")
+                    b.HasOne("Hub.Monetrik.Domain.Models.Entities.Despesa.Despesa", "Despesa")
                         .WithMany("Parcelas")
                         .HasForeignKey("DespesaId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -111,7 +118,7 @@ namespace Hub.MoneTrik.Infrastructure.Migrations
                     b.Navigation("Despesa");
                 });
 
-            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Despesas.Despesa", b =>
+            modelBuilder.Entity("Hub.Monetrik.Domain.Models.Entities.Despesa.Despesa", b =>
                 {
                     b.Navigation("Parcelas");
                 });

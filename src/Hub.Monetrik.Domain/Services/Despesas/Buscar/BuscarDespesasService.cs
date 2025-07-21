@@ -1,7 +1,7 @@
 using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Domain.Interfaces.Despesas;
 using Hub.Monetrik.Domain.Interfaces.Repository;
-using Hub.Monetrik.Domain.Models.Entities.Despesa;
+using Hub.Monetrik.Domain.Models.Entities.Despesas;
 using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 namespace Hub.Monetrik.Domain.Services.Despesas.Buscar
