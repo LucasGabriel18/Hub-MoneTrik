@@ -16,7 +16,7 @@ namespace Hub.Monetrik.Domain.Services.Despesas.Buscar
             _mediator = mediator;
         }
 
-        public async Task<Despesa> GetDespesaPorIdRepository(int id)
+        public async Task<Despesa> BuscarDespesaPorIdRepository(int id)
         {
             try
             {

@@ -76,7 +76,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         [HttpGet("buscar-despesa-por-id")]
         public async Task<IActionResult> BuscarDespesaPorId([FromQuery] int id)
         {
-            var request = await _despesasService.GetDespesaPorIdRepository(id);
+            var request = await _despesasService.BuscarDespesaPorIdRepository(id);
 
             if (request is null)
             {
