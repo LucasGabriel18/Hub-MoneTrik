@@ -12,7 +12,8 @@ namespace Hub.Monetrik.Api.Mappers.Parcelas
                 Id = parcela.Id,
                 DespesaId = parcela.DespesaId,
                 NumeroParcela = parcela.NumeroParcela,
-                ValorParcela = parcela.ValorParcela,
+                ValorParcela = parcela.ValorParcela,      
+                FormaPagamento = parcela.FormaPagamento,          
                 DataVencimento = parcela.DataVencimento,
                 Situacao = parcela.Situacao
             };

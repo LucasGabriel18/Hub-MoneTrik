@@ -25,6 +25,10 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                 .IsInEnum()
                 .WithMessage("O valor digitado não corresponde ao esperado! Por favor escolha entre (Fixa ou Variavel)");
 
+            RuleFor(x => x.FormaPagamento)
+                .IsInEnum()
+                .WithMessage("O valor digitado não corresponde ao esperado!");
+
             RuleFor(x => x.QntdParcelas)
                 .GreaterThanOrEqualTo(1)
                 .WithMessage("O número mínimo de parcelas é 1")
