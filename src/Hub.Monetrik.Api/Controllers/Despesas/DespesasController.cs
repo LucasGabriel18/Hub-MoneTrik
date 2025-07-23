@@ -52,7 +52,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         {
             var request = await _despesasService.GetDespesasRepository();
 
-            if (!request.Any())
+            if (request.Count == 0)
             {
                 await _mediator.Publish(new Notification(
                     "Nenhuma despesa encontrada",
@@ -76,12 +76,12 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         [HttpGet("buscar-despesa-por-id")]
         public async Task<IActionResult> BuscarDespesaPorId([FromQuery] int id)
         {
-            var request = await _despesasService.GetDespesaPorIdRepository(id);
+            var request = await _despesasService.BuscarDespesaPorIdRepository(id);
 
             if (request is null)
             {
                 var notifications = _notifications.GetNotifications().ToList();
-                if (!notifications.Any())
+                if (notifications.Count == 0)
                 {
                     await _mediator.Publish(new Notification(
                         $"Erro ao buscar despesa com ID {id}",

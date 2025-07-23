@@ -38,5 +38,12 @@ namespace Hub.MoneTrik.Infrastructure.Repositories.Parcelas
             await _context.SaveChangesAsync();
             return parcela;
         }
+
+        public async Task<Parcela> AtualizarValorParcelaParcelaRepository(Parcela parcela)
+        {
+            _context.Update(parcela);
+            await _context.SaveChangesAsync();
+            return parcela;
+        }
     }
 }

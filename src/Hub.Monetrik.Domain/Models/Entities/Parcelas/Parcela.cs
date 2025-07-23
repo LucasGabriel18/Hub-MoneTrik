@@ -23,6 +23,9 @@ namespace Hub.Monetrik.Domain.Models.Entities.Parcelas
         [Column("valor_parcela", TypeName = "decimal(18,2)")]
         public decimal ValorParcela { get; set; }
 
+        [Column("forma_pagamento")]
+        public string FormaPagamento { get; set; }
+
         [Column("data_vencimento")]
         public string DataVencimento { get; set; }
 
