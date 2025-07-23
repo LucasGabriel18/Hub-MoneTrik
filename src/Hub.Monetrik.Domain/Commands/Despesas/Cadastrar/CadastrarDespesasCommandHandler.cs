@@ -53,8 +53,9 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
                         DespesaId = despesaSalva.Id,
                         NumeroParcela = i,
                         ValorParcela = request.ValorParcela,
+                        FormaPagamento = request.FormaPagamento.ToString(),
                         DataVencimento = dataPagamento.ToString("dd/MM/yyyy"),
-                        Situacao = ESituacaoDespesa.Pendente.ToString()
+                        Situacao = ESituacaoDespesa.Pendente.ToString()                        
                     };
 
                     await _parcelasRepository.CadastrarParcelaRepository(parcela);

@@ -12,16 +12,17 @@ namespace Hub.MoneTrik.Infrastructure.Repositories.Despesas
             _context = context;
         }
 
-        public async Task<Despesa> AtualizarSituacaoDespesaRepository(Despesa despesa)
+        public async Task<Despesa> AtualizarValorTotalDespesaRepository(Despesa despesa)
         {
             _context.Update(despesa);
             await _context.SaveChangesAsync();
             return despesa;
         }
+
         public async Task<Despesa> BuscarDespesaPorIdRepository(int id)
         {
             return await _context.Despesas
-                .AsNoTracking()
+                // .AsNoTracking()
                 .Include(d => d.Parcelas)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }

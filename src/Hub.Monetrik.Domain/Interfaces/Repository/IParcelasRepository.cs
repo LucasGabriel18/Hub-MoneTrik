@@ -8,5 +8,6 @@ namespace Hub.Monetrik.Domain.Interfaces.Repository
         Task<List<Parcela>> BuscarParcelasPorDespesaIdRepository(int despesaId);
         Task<Parcela> BuscarParcelaPorIdRepository(int id);
         Task<Parcela> AtualizarSituacaoParcelaRepository(Parcela parcela);
+        Task<Parcela> AtualizarValorParcelaParcelaRepository(Parcela parcela);
     }
 }

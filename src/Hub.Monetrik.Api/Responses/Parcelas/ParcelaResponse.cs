@@ -6,6 +6,7 @@ namespace Hub.Monetrik.Api.Responses.Parcelas
         public int DespesaId { get; set; }
         public int NumeroParcela { get; set; }
         public decimal ValorParcela { get; set; }
+        public string FormaPagamento { get; set; }
         public string DataVencimento { get; set; }
         public string Situacao { get; set; }       
     }

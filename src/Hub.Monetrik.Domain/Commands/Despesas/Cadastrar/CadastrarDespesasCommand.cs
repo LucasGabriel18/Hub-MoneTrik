@@ -10,6 +10,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
         public string Descricao { get; set; }
         public ECategoriaDespesas Categoria { get; set; }
         public ETipoDespesas Tipo { get; set; }
+        public EFormasPagamento FormaPagamento { get; set; }
         public int QntdParcelas { get; set; } = 1; // Default 1 parcela
         public decimal ValorParcela { get; set; }             
         public DateTime DataPagamento { get; set; }
