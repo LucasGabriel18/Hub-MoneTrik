@@ -1,154 +1,36 @@
-import { useState } from "react";
-import {
-  ChevronDown,
-  ChevronUp,
-  CircleGauge,
-  DollarSign,
-  Calendar,
-  Package,
-} from "lucide-react";
-import Navbar from "../../components/Navbar";
-import "./dash.css";
-
-interface Parcela {
-  id: number;
-  nrParcela: number;
-  valor: number;
-  dataVencimento: string;
-  dataPagamento?: string;
-  status: "pago" | "pendente" | "vencido";
-  despesaId: number;
-}
-
-interface Despesa {
-  id: number;
-  titulo: string;
-  descricao: string;
-  categoria: string;
-  tipo: string;
-  formaPagamento: string;
-  quantidadeParcelas: number;
-  valorTotal: number;
-  dataCriacao: string;
-  parcelas: Parcela[];
-}
-
-// Dados mockados para estruturar o front
-const despesasMock: Despesa[] = [
-  {
-    id: 1,
-    titulo: "Aluguel",
-    descricao: "Pagamento mensal do aluguel",
-    categoria: "Moradia",
-    tipo: "Despesa",
-    formaPagamento: "Cartão de Crédito",
-    quantidadeParcelas: 12,
-    valorTotal: 1200.0,
-    dataCriacao: "2024-01-01",
-    parcelas: [
-      {
-        id: 1,
-        nrParcela: 1,
-        valor: 100.0,
-        dataVencimento: "2024-01-05",
-        dataPagamento: "2024-01-05",
-        status: "pago",
-        despesaId: 1,
-      },
-      {
-        id: 2,
-        nrParcela: 2,
-        valor: 100.0,
-        dataVencimento: "2024-02-05",
-        dataPagamento: "2024-02-05",
-        status: "pago",
-        despesaId: 1,
-      },
-      {
-        id: 3,
-        nrParcela: 3,
-        valor: 100.0,
-        dataVencimento: "2024-03-05",
-        status: "pendente",
-        despesaId: 1,
-      },
-      {
-        id: 4,
-        nrParcela: 4,
-        valor: 100.0,
-        dataVencimento: "2024-04-05",
-        status: "pendente",
-        despesaId: 1,
-      },
-    ],
-  },
-  {
-    id: 2,
-    titulo: "Compras Supermercado",
-    descricao: "Compras mensais de alimentação",
-    categoria: "Alimentação",
-    tipo: "Despesa",
-    formaPagamento: "Débito",
-    quantidadeParcelas: 1,
-    valorTotal: 350.0,
-    dataCriacao: "2024-07-15",
-    parcelas: [
-      {
-        id: 5,
-        nrParcela: 1,
-        valor: 350.0,
-        dataVencimento: "2024-07-15",
-        dataPagamento: "2024-07-15",
-        status: "pago",
-        despesaId: 2,
-      },
-    ],
-  },
-  {
-    id: 3,
-    titulo: "Financiamento Carro",
-    descricao: "Parcelas do financiamento do veículo",
-    categoria: "Transporte",
-    tipo: "Despesa",
-    formaPagamento: "Débito Automático",
-    quantidadeParcelas: 60,
-    valorTotal: 30000.0,
-    dataCriacao: "2023-01-01",
-    parcelas: [
-      {
-        id: 6,
-        nrParcela: 18,
-        valor: 500.0,
-        dataVencimento: "2024-07-10",
-        dataPagamento: "2024-07-10",
-        status: "pago",
-        despesaId: 3,
-      },
-      {
-        id: 7,
-        nrParcela: 19,
-        valor: 500.0,
-        dataVencimento: "2024-08-10",
-        status: "pendente",
-        despesaId: 3,
-      },
-      {
-        id: 8,
-        nrParcela: 20,
-        valor: 500.0,
-        dataVencimento: "2024-09-10",
-        status: "pendente",
-        despesaId: 3,
-      },
-    ],
-  },
-];
+import { useEffect, useState } from 'react';
+import { ChevronDown, ChevronUp, CircleGauge, DollarSign, Calendar, Package, AlertCircle, Loader2, Edit, Trash2, Eye } from 'lucide-react';
+import Navbar from '../../components/Navbar';
+import './dash.css';
+import { despesasService } from '../../services/DespesasService';
+import { DespesasMapper, type Despesa } from '../../utils/DespesasUtils';
 
 function Dashboard() {
-  const [despesas] = useState<Despesa[]>(despesasMock);
-  const [despesasExpandidas, setDespesasExpandidas] = useState<Set<number>>(
-    new Set()
-  );
+  const [despesas, setDespesas] = useState<Despesa[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
+  const [despesasExpandidas, setDespesasExpandidas] = useState<Set<number>>(new Set());
+
+  const buscarDespesas = async () => {
+    try {
+      setLoading(true);
+      setErro(null);
+
+      const response = await despesasService.buscarDespesas();
+      const despesasMapeadas = DespesasMapper.mapDespesasFromApi(response.despesas);
+      
+      setDespesas(despesasMapeadas);
+    } catch (error) {
+      console.error('Erro ao buscar despesas:', error);
+      setErro(error instanceof Error ? error.message : 'Erro desconhecido');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    buscarDespesas();
+  }, []);
 
   const toggleDespesa = (despesaId: number) => {
     const novasExpandidas = new Set(despesasExpandidas);
@@ -161,26 +43,27 @@ function Dashboard() {
   };
 
   const formatarValor = (valor: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
     }).format(valor);
   };
 
   const formatarData = (data: string) => {
-    return new Date(data).toLocaleDateString("pt-BR");
+    // Se a data já está no formato dd/mm/yyyy, retorna como está
+    if (data.includes('/')) {
+      return data;
+    }
+    // Se está no formato ISO, converte
+    return new Date(data).toLocaleDateString('pt-BR');
   };
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "pago":
-        return "#28a745";
-      case "pendente":
-        return "#ffc107";
-      case "vencido":
-        return "#dc3545";
-      default:
-        return "#6c757d";
+      case 'pago': return '#28a745';
+      case 'pendente': return '#ffc107';
+      case 'vencido': return '#dc3545';
+      default: return '#6c757d';
     }
   };
 
@@ -190,17 +73,61 @@ function Dashboard() {
 
   const calcularParcelasPagas = () => {
     return despesas.reduce((total, despesa) => {
-      return total + despesa.parcelas.filter((p) => p.status === "pago").length;
+      return total + despesa.parcelas.filter(p => p.status === 'pago').length;
     }, 0);
   };
 
   const calcularParcelasPendentes = () => {
     return despesas.reduce((total, despesa) => {
-      return (
-        total + despesa.parcelas.filter((p) => p.status === "pendente").length
-      );
+      return total + despesa.parcelas.filter(p => p.status === 'pendente').length;
     }, 0);
   };
+
+  const handleEditar = (despesaId: number) => {
+    console.log('Editando despesa:', despesaId);
+    // TODO: Implementar navegação para edição
+  };
+
+  const handleExcluir = (despesaId: number) => {
+    console.log('Excluindo despesa:', despesaId);
+    // TODO: Implementar exclusão
+  };
+
+  const handleVisualizar = (despesaId: number) => {
+    console.log('Visualizando despesa:', despesaId);
+    // TODO: Implementar visualização detalhada
+  };
+
+  if (loading) {
+    return (
+      <>
+        <Navbar />
+        <div className="dashboard-container">
+          <div className="loading-container">
+            <Loader2 className="loading-icon" size={32} />
+            <span>Carregando despesas...</span>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  if (erro) {
+    return (
+      <>
+        <Navbar />
+        <div className="dashboard-container">
+          <div className="erro-container">
+            <AlertCircle className="erro-icon" size={24} />
+            <span>Erro ao carregar despesas: {erro}</span>
+            <button className="btn-tentar-novamente" onClick={buscarDespesas}>
+              Tentar Novamente
+            </button>
+          </div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -217,9 +144,7 @@ function Dashboard() {
               <DollarSign className="resumo-icon" size={20} />
               <div>
                 <span className="resumo-label">Total de Despesas</span>
-                <span className="resumo-valor">
-                  {formatarValor(calcularTotalDespesas())}
-                </span>
+                <span className="resumo-valor">{formatarValor(calcularTotalDespesas())}</span>
               </div>
             </div>
 
@@ -243,107 +168,137 @@ function Dashboard() {
               <Calendar className="resumo-icon" size={20} />
               <div>
                 <span className="resumo-label">Parcelas Pendentes</span>
-                <span className="resumo-valor">
-                  {calcularParcelasPendentes()}
-                </span>
+                <span className="resumo-valor">{calcularParcelasPendentes()}</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="despesas-container">
-          <div className="table-header">
-            <div className="header-cell">ID</div>
-            <div className="header-cell">Título</div>
-            <div className="header-cell">Descrição</div>
-            <div className="header-cell">Categoria</div>
-            <div className="header-cell">Forma Pagamento</div>
-            <div className="header-cell">Parcelas</div>
-            <div className="header-cell">Valor Total</div>
-            <div className="header-cell">Data Criação</div>
-            <div className="header-cell"></div>
-          </div>
-
-          {despesas.map((despesa) => (
-            <div key={despesa.id} className="despesa-item">
-              <div
-                className="despesa-row"
-                onClick={() => toggleDespesa(despesa.id)}
-              >
-                <div className="despesa-cell">{despesa.id}</div>
-                <div className="despesa-cell despesa-titulo">
-                  {despesa.titulo}
-                </div>
-                <div className="despesa-cell">{despesa.descricao}</div>
-                <div className="despesa-cell">
-                  <span className="categoria-tag">{despesa.categoria}</span>
-                </div>
-                <div className="despesa-cell">{despesa.formaPagamento}</div>
-                <div className="despesa-cell">
-                  <span className="parcelas-badge">
-                    {despesa.quantidadeParcelas}x
-                  </span>
-                </div>
-                <div className="despesa-cell despesa-valor">
-                  {formatarValor(despesa.valorTotal)}
-                </div>
-                <div className="despesa-cell">
-                  {formatarData(despesa.dataCriacao)}
-                </div>
-                <div className="despesa-cell despesa-toggle">
-                  {despesasExpandidas.has(despesa.id) ? (
-                    <ChevronUp size={20} />
-                  ) : (
-                    <ChevronDown size={20} />
-                  )}
-                </div>
+          {despesas.length === 0 ? (
+            <div className="vazio-container">
+              <CircleGauge className="vazio-icon" size={48} />
+              <h3>Nenhuma despesa encontrada</h3>
+              <p>Comece adicionando suas primeiras despesas.</p>
+            </div>
+          ) : (
+            <>
+              <div className="table-header">
+                <div className="header-cell">ID</div>
+                <div className="header-cell">Título</div>
+                <div className="header-cell">Descrição</div>
+                <div className="header-cell">Categoria</div>
+                <div className="header-cell">Tipo</div>
+                <div className="header-cell">Parcelas</div>
+                <div className="header-cell">Valor Total</div>
+                <div className="header-cell">Data Criação</div>
+                <div className="header-cell">Ações</div>
+                <div className="header-cell"></div>
               </div>
 
-              {despesasExpandidas.has(despesa.id) && (
-                <div className="parcelas-dropdown">
-                  <div className="parcelas-header">
-                    <h4>Parcelas ({despesa.parcelas.length})</h4>
-                  </div>
-
-                  <div className="parcelas-table">
-                    <div className="parcelas-table-header">
-                      <div>Nº Parcela</div>
-                      <div>Valor</div>
-                      <div>Vencimento</div>
-                      <div>Pagamento</div>
-                      <div>Status</div>
-                      <div>Ações</div>
+              {despesas.map((despesa) => (
+                <div key={despesa.id} className="despesa-item">
+                  <div className="despesa-row">
+                    <div className="despesa-cell">{despesa.id}</div>
+                    <div className="despesa-cell despesa-titulo">{despesa.titulo}</div>
+                    <div className="despesa-cell">{despesa.descricao}</div>
+                    <div className="despesa-cell">
+                      <span className="categoria-tag">{despesa.categoria}</span>
                     </div>
-
-                    {despesa.parcelas.map((parcela) => (
-                      <div key={parcela.id} className="parcela-row">
-                        <div className="parcela-cell">
-                          {parcela.nrParcela}/{despesa.quantidadeParcelas}
-                        </div>
-                        <div className="parcela-cell parcela-valor">
-                          {formatarValor(parcela.valor)}
-                        </div>
-                        <div className="parcela-cell">
-                          {formatarData(parcela.dataVencimento)}
-                        </div>
-                        <div className="parcela-cell">
-                          {parcela.dataPagamento
-                            ? formatarData(parcela.dataPagamento)
-                            : "-"}
-                        </div>
-                        <div
-                          className="parcela-cell parcela-status"
-                          style={{ color: getStatusColor(parcela.status) }}
-                        >
-                          {parcela.status.toUpperCase()}
-                        </div>
-                      </div>
-                    ))}
+                    <div className="despesa-cell">{despesa.tipo}</div>
+                    <div className="despesa-cell">
+                      <span className="parcelas-badge">{despesa.quantidadeParcelas}x</span>
+                    </div>
+                    <div className="despesa-cell despesa-valor">{formatarValor(despesa.valorTotal)}</div>
+                    <div className="despesa-cell">{formatarData(despesa.dataCriacao)}</div>
+                    <div className="despesa-cell acoes-cell">
+                      <button
+                        className="btn-acao btn-visualizar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleVisualizar(despesa.id);
+                        }}
+                        title="Visualizar"
+                      >
+                        <Eye size={16} />
+                      </button>
+                      <button
+                        className="btn-acao btn-editar"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEditar(despesa.id);
+                        }}
+                        title="Editar"
+                      >
+                        <Edit size={16} />
+                      </button>
+                      <button
+                        className="btn-acao btn-excluir"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleExcluir(despesa.id);
+                        }}
+                        title="Excluir"
+                      >
+                        <Trash2 size={16} />
+                      </button>
+                    </div>
+                    <div
+                      className="despesa-cell despesa-toggle"
+                      onClick={() => toggleDespesa(despesa.id)}
+                    >
+                      {despesasExpandidas.has(despesa.id) ? (
+                        <ChevronUp size={20} />
+                      ) : (
+                        <ChevronDown size={20} />
+                      )}
+                    </div>
                   </div>
+
+                  {despesasExpandidas.has(despesa.id) && (
+                    <div className="parcelas-dropdown">
+                      <div className="parcelas-header">
+                        <h4>Parcelas ({despesa.parcelas.length})</h4>
+                      </div>
+
+                      <div className="parcelas-table">
+                        <div className="parcelas-table-header">
+                          <div>Nº Parcela</div>
+                          <div>Valor</div>
+                          <div>Vencimento</div>
+                          <div>Pagamento</div>
+                          <div>Status</div>
+                        </div>
+
+                        {despesa.parcelas.map((parcela) => (
+                          <div key={parcela.id} className="parcela-row">
+                            <div className="parcela-cell">
+                              {parcela.nrParcela}/{despesa.quantidadeParcelas}
+                            </div>
+                            <div className="parcela-cell parcela-valor">
+                              {formatarValor(parcela.valor)}
+                            </div>
+                            <div className="parcela-cell">
+                              {formatarData(parcela.dataVencimento)}
+                            </div>
+                            <div className="parcela-cell">
+                              {parcela.dataPagamento ? formatarData(parcela.dataPagamento) : '-'}
+                            </div>
+                            <div
+                              className="parcela-cell parcela-status"
+                              style={{ color: getStatusColor(parcela.status) }}
+                            >
+                              {parcela.status.toUpperCase()}
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
-              )}
-            </div>
-          ))}
+              ))}
+            </>
+          )}
         </div>
       </div>
     </>

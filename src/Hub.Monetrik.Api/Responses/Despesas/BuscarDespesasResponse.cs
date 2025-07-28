@@ -1,5 +1,3 @@
-using Hub.Monetrik.Domain.Models.Entities.Despesas;
-
 namespace Hub.Monetrik.Api.Responses.Despesas
 {
     public class BuscarDespesasResponse

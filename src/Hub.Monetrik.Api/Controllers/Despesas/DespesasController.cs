@@ -5,6 +5,7 @@ using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Microsoft.AspNetCore.Mvc;
+using Hub.Monetrik.Api.Responses.Despesas;
 namespace Hub.Monetrik.Api.Controllers.Despesas
 {
     [ApiController]
@@ -48,7 +49,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         }
 
         [HttpGet("buscar-despesas")]
-        public async Task<IActionResult> BuscarDespesas()
+        public async Task<ActionResult<BuscarDespesasResponse>> BuscarDespesas()
         {
             var response = await _despesasService.GetDespesasRepository();
 
