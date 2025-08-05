@@ -71,14 +71,10 @@ function Dashboard() {
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case "pago":
-        return "#28a745";
-      case "pendente":
-        return "#ffc107";
-      case "vencido":
-        return "#dc3545";
-      default:
-        return "#6c757d";
+      case "pago": return "#28a745";
+      case "pendente": return "#ffc107";
+      case "vencido": return "#dc3545";
+      default: return "#6c757d";
     }
   };
 
