@@ -1,15 +1,26 @@
-import { useEffect, useState } from 'react';
-import { ChevronDown, ChevronUp, CircleGauge, DollarSign, Calendar, Package, AlertCircle, Loader2, Edit, Trash2, Eye } from 'lucide-react';
-import Navbar from '../../components/Navbar';
-import './dash.css';
-import { despesasService } from '../../services/DespesasService';
-import { DespesasMapper, type Despesa } from '../../utils/DespesasUtils';
+import { useEffect, useState } from "react";
+import {
+  ChevronDown,
+  ChevronUp,
+  CircleGauge,
+  DollarSign,
+  Calendar,
+  Package,
+  AlertCircle,
+  Loader2,
+} from "lucide-react";
+import Navbar from "../../components/Navbar";
+import "./dash.css";
+import { despesasService } from "../../services/DespesasService";
+import { DespesasMapper, type Despesa } from "../../utils/DespesasUtils";
 
 function Dashboard() {
   const [despesas, setDespesas] = useState<Despesa[]>([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
-  const [despesasExpandidas, setDespesasExpandidas] = useState<Set<number>>(new Set());
+  const [despesasExpandidas, setDespesasExpandidas] = useState<Set<number>>(
+    new Set()
+  );
 
   const buscarDespesas = async () => {
     try {
@@ -17,12 +28,14 @@ function Dashboard() {
       setErro(null);
 
       const response = await despesasService.buscarDespesas();
-      const despesasMapeadas = DespesasMapper.mapDespesasFromApi(response.despesas);
-      
+      const despesasMapeadas = DespesasMapper.mapDespesasFromApi(
+        response.despesas
+      );
+
       setDespesas(despesasMapeadas);
     } catch (error) {
-      console.error('Erro ao buscar despesas:', error);
-      setErro(error instanceof Error ? error.message : 'Erro desconhecido');
+      console.error("Erro ao buscar despesas:", error);
+      setErro(error instanceof Error ? error.message : "Erro desconhecido");
     } finally {
       setLoading(false);
     }
@@ -43,27 +56,29 @@ function Dashboard() {
   };
 
   const formatarValor = (valor: number) => {
-    return new Intl.NumberFormat('pt-BR', {
-      style: 'currency',
-      currency: 'BRL'
+    return new Intl.NumberFormat("pt-BR", {
+      style: "currency",
+      currency: "BRL",
     }).format(valor);
   };
 
   const formatarData = (data: string) => {
-    // Se a data já está no formato dd/mm/yyyy, retorna como está
-    if (data.includes('/')) {
+    if (data.includes("/")) {
       return data;
     }
-    // Se está no formato ISO, converte
-    return new Date(data).toLocaleDateString('pt-BR');
+    return new Date(data).toLocaleDateString("pt-BR");
   };
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
-      case 'pago': return '#28a745';
-      case 'pendente': return '#ffc107';
-      case 'vencido': return '#dc3545';
-      default: return '#6c757d';
+      case "pago":
+        return "#28a745";
+      case "pendente":
+        return "#ffc107";
+      case "vencido":
+        return "#dc3545";
+      default:
+        return "#6c757d";
     }
   };
 
@@ -73,29 +88,16 @@ function Dashboard() {
 
   const calcularParcelasPagas = () => {
     return despesas.reduce((total, despesa) => {
-      return total + despesa.parcelas.filter(p => p.status === 'pago').length;
+      return total + despesa.parcelas.filter((p) => p.status === "pago").length;
     }, 0);
   };
 
   const calcularParcelasPendentes = () => {
     return despesas.reduce((total, despesa) => {
-      return total + despesa.parcelas.filter(p => p.status === 'pendente').length;
+      return (
+        total + despesa.parcelas.filter((p) => p.status === "pendente").length
+      );
     }, 0);
-  };
-
-  const handleEditar = (despesaId: number) => {
-    console.log('Editando despesa:', despesaId);
-    // TODO: Implementar navegação para edição
-  };
-
-  const handleExcluir = (despesaId: number) => {
-    console.log('Excluindo despesa:', despesaId);
-    // TODO: Implementar exclusão
-  };
-
-  const handleVisualizar = (despesaId: number) => {
-    console.log('Visualizando despesa:', despesaId);
-    // TODO: Implementar visualização detalhada
   };
 
   if (loading) {
@@ -144,14 +146,16 @@ function Dashboard() {
               <DollarSign className="resumo-icon" size={20} />
               <div>
                 <span className="resumo-label">Total de Despesas</span>
-                <span className="resumo-valor">{formatarValor(calcularTotalDespesas())}</span>
+                <span className="resumo-valor">
+                  {formatarValor(calcularTotalDespesas())}
+                </span>
               </div>
             </div>
 
             <div className="resumo-card">
               <Package className="resumo-icon" size={20} />
               <div>
-                <span className="resumo-label">Total de Despesas</span>
+                <span className="resumo-label">Quantidade de Despesas</span>
                 <span className="resumo-valor">{despesas.length}</span>
               </div>
             </div>
@@ -168,7 +172,9 @@ function Dashboard() {
               <Calendar className="resumo-icon" size={20} />
               <div>
                 <span className="resumo-label">Parcelas Pendentes</span>
-                <span className="resumo-valor">{calcularParcelasPendentes()}</span>
+                <span className="resumo-valor">
+                  {calcularParcelasPendentes()}
+                </span>
               </div>
             </div>
           </div>
@@ -189,10 +195,10 @@ function Dashboard() {
                 <div className="header-cell">Descrição</div>
                 <div className="header-cell">Categoria</div>
                 <div className="header-cell">Tipo</div>
+                <div className="header-cell">Forma de Pagamento</div>
                 <div className="header-cell">Parcelas</div>
                 <div className="header-cell">Valor Total</div>
                 <div className="header-cell">Data Criação</div>
-                <div className="header-cell">Ações</div>
                 <div className="header-cell"></div>
               </div>
 
@@ -200,48 +206,29 @@ function Dashboard() {
                 <div key={despesa.id} className="despesa-item">
                   <div className="despesa-row">
                     <div className="despesa-cell">{despesa.id}</div>
-                    <div className="despesa-cell despesa-titulo">{despesa.titulo}</div>
+                    <div className="despesa-cell despesa-titulo">
+                      {despesa.titulo}
+                    </div>
                     <div className="despesa-cell">{despesa.descricao}</div>
                     <div className="despesa-cell">
                       <span className="categoria-tag">{despesa.categoria}</span>
                     </div>
                     <div className="despesa-cell">{despesa.tipo}</div>
                     <div className="despesa-cell">
-                      <span className="parcelas-badge">{despesa.quantidadeParcelas}x</span>
+                      <span className="forma-pagamento-tag">
+                        {despesa.formaPagamento}
+                      </span>
                     </div>
-                    <div className="despesa-cell despesa-valor">{formatarValor(despesa.valorTotal)}</div>
-                    <div className="despesa-cell">{formatarData(despesa.dataCriacao)}</div>
-                    <div className="despesa-cell acoes-cell">
-                      <button
-                        className="btn-acao btn-visualizar"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleVisualizar(despesa.id);
-                        }}
-                        title="Visualizar"
-                      >
-                        <Eye size={16} />
-                      </button>
-                      <button
-                        className="btn-acao btn-editar"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEditar(despesa.id);
-                        }}
-                        title="Editar"
-                      >
-                        <Edit size={16} />
-                      </button>
-                      <button
-                        className="btn-acao btn-excluir"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleExcluir(despesa.id);
-                        }}
-                        title="Excluir"
-                      >
-                        <Trash2 size={16} />
-                      </button>
+                    <div className="despesa-cell">
+                      <span className="parcelas-badge">
+                        {despesa.quantidadeParcelas}x
+                      </span>
+                    </div>
+                    <div className="despesa-cell despesa-valor">
+                      {formatarValor(despesa.valorTotal)}
+                    </div>
+                    <div className="despesa-cell">
+                      {formatarData(despesa.dataCriacao)}
                     </div>
                     <div
                       className="despesa-cell despesa-toggle"
@@ -268,6 +255,7 @@ function Dashboard() {
                           <div>Vencimento</div>
                           <div>Pagamento</div>
                           <div>Status</div>
+                          <div>Forma de Pagamento</div>
                         </div>
 
                         {despesa.parcelas.map((parcela) => (
@@ -282,13 +270,20 @@ function Dashboard() {
                               {formatarData(parcela.dataVencimento)}
                             </div>
                             <div className="parcela-cell">
-                              {parcela.dataPagamento ? formatarData(parcela.dataPagamento) : '-'}
+                              {parcela.dataPagamento
+                                ? formatarData(parcela.dataPagamento)
+                                : "-"}
                             </div>
                             <div
                               className="parcela-cell parcela-status"
                               style={{ color: getStatusColor(parcela.status) }}
                             >
                               {parcela.status.toUpperCase()}
+                            </div>
+                            <div className="parcela-cell">
+                              <span className="forma-pagamento-parcela">
+                                {parcela.formaPagamento}
+                              </span>
                             </div>
                           </div>
                         ))}

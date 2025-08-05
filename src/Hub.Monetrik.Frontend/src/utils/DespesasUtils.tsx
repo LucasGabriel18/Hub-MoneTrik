@@ -7,6 +7,7 @@ export interface Parcela {
   dataVencimento: string;
   dataPagamento?: string;
   status: "pago" | "pendente" | "vencido";
+  formaPagamento?: string;
   despesaId: number;
 }
 
@@ -44,21 +45,30 @@ export const mapParcelaFromApi = (parcela: ParcelaApi): Parcela => {
     nrParcela: parcela.numeroParcela,
     valor: parcela.valorParcela,
     dataVencimento: parcela.dataVencimento,
-    dataPagamento:
-      parcela.situacao === "Pago" ? parcela.dataVencimento : undefined,
+    formaPagamento: parcela.formaPagamento || "Não informado",
+    dataPagamento: parcela.situacao === "Pago" ? parcela.dataVencimento : undefined,
     status: mapSituacaoToStatus(parcela.situacao),
     despesaId: parcela.despesaId,
   };
 };
 
 export const mapDespesaFromApi = (despesa: DespesaApi): Despesa => {
+  // Inferir forma de pagamento das parcelas se não vier na despesa
+  const formasPagamento = despesa.parcelas
+    .map(p => p.formaPagamento)
+    .filter(Boolean);
+  
+  const formaPagamentoPrincipal = formasPagamento.length > 0 
+    ? formasPagamento[0] 
+    : "Não informado";
+
   return {
     id: despesa.id,
     titulo: despesa.titulo,
     descricao: despesa.descricao,
     categoria: despesa.categoria,
     tipo: despesa.tipo,
-    formaPagamento: "Não informado",
+    formaPagamento: formaPagamentoPrincipal || "Não informado",
     quantidadeParcelas: despesa.totalParcelas,
     valorTotal: despesa.valorTotal,
     dataCriacao: despesa.dataRegistro,

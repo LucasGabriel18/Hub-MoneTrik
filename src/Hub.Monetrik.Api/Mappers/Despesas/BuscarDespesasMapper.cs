@@ -29,7 +29,8 @@ namespace Hub.Monetrik.Api.Mappers.Despesas
                         NumeroParcela = p.NumeroParcela,
                         ValorParcela = p.ValorParcela,
                         DataVencimento = p.DataVencimento,
-                        Situacao = p.Situacao
+                        Situacao = p.Situacao,
+                        FormaPagamento = p.FormaPagamento
                     })]
                 })]
             };

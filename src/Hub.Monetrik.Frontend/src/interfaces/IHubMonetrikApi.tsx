@@ -13,6 +13,7 @@ export interface ParcelaApi {
   numeroParcela: number;
   valorParcela: number;
   dataVencimento: string;
+  formaPagamento?: string;
   situacao: string;
 }
 

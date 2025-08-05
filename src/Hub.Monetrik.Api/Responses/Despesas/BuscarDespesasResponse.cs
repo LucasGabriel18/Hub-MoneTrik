@@ -24,6 +24,7 @@ namespace Hub.Monetrik.Api.Responses.Despesas
         public int NumeroParcela { get; set; }
         public decimal ValorParcela { get; set; }
         public string DataVencimento { get; set; }
+        public string FormaPagamento { get; set; }
         public string Situacao { get; set; }
     }
 }

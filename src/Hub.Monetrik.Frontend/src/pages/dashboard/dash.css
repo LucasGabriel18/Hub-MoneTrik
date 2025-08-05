@@ -68,11 +68,12 @@
   border-radius: 12px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  border: 1px solid #e9ecef;
 }
 
 .table-header {
   display: grid;
-  grid-template-columns: 60px 200px 250px 150px 160px 100px 130px 130px 40px;
+  grid-template-columns: 60px 180px 200px 120px 100px 140px 80px 120px 120px 40px;
   gap: 1rem;
   padding: 1rem;
   background-color: rgb(17, 150, 105);
@@ -84,8 +85,8 @@
 .header-cell {
   display: flex;
   align-items: center;
+  color: white;
   background-color: transparent;
-  color: #ffffff;
 }
 
 .despesa-item {
@@ -98,12 +99,13 @@
 
 .despesa-row {
   display: grid;
-  grid-template-columns: 60px 200px 250px 150px 160px 100px 130px 130px 40px;
+  grid-template-columns: 60px 180px 200px 120px 100px 140px 80px 120px 120px 40px;
   gap: 1rem;
   padding: 1rem;
   cursor: pointer;
   transition: background-color 0.2s ease;
   align-items: center;
+  background: white;
 }
 
 .despesa-row:hover {
@@ -130,10 +132,27 @@
 }
 
 .categoria-tag {
-  background: rgb(33, 61, 52);
+  background: linear-gradient(
+    135deg,
+    rgb(17, 150, 105) 0%,
+    rgb(13, 110, 80) 100%
+  );
   color: white;
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.forma-pagamento-tag {
+  background: linear-gradient(
+    135deg,
+    rgba(69, 109, 32, 0.829) 0%,
+    rgb(13, 110, 80) 100%
+  );
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
   font-size: 0.8rem;
   font-weight: 500;
 }
@@ -150,8 +169,10 @@
 .despesa-toggle {
   display: flex;
   justify-content: center;
+  background-color: transparent;
   align-items: center;
   color: #2a5298;
+  cursor: pointer;
 }
 
 .parcelas-dropdown {
@@ -166,7 +187,7 @@
 
 .parcelas-header h4 {
   margin: 0;
-  color: #1e3c72;
+  color: rgb(17, 150, 105);
   font-size: 1.1rem;
 }
 
@@ -176,7 +197,8 @@
 
 .parcelas-table-header {
   display: grid;
-  grid-template-columns: 120px 120px 120px 120px 100px;
+  white-space: nowrap;
+  grid-template-columns: 120px 120px 120px 120px 100px 140px;
   gap: 1rem;
   padding: 0.75rem;
   border-radius: 8px;
@@ -187,7 +209,7 @@
 
 .parcela-row {
   display: grid;
-  grid-template-columns: 120px 120px 120px 120px 100px;
+  grid-template-columns: 120px 120px 120px 120px 100px 140px;
   gap: 1rem;
   padding: 0.75rem;
   background: white;
@@ -216,18 +238,73 @@
   font-size: 0.8rem;
 }
 
+.forma-pagamento-parcela {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #17a2b8;
+}
+
+/* Estados de loading, erro e vazio */
+.loading-container,
+.erro-container,
+.vazio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  color: #666;
+}
+
+.loading-icon {
+  animation: spin 1s linear infinite;
+  color: rgb(17, 150, 105);
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.erro-container {
+  color: #dc3545;
+}
+
+.btn-tentar-novamente:hover {
+  background: rgb(13, 110, 80);
+}
+
+.vazio-container {
+  color: #888;
+}
+
+.vazio-icon {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
 /* Responsividade */
 @media (max-width: 1200px) {
   .table-header,
   .despesa-row {
-    grid-template-columns: 50px 150px 200px 120px 140px 80px 110px 110px 30px;
+    grid-template-columns: 50px 150px 180px 100px 80px 120px 60px 100px 100px 30px;
     gap: 0.5rem;
     font-size: 0.8rem;
   }
 
   .parcelas-table-header,
   .parcela-row {
-    grid-template-columns: 100px 100px 100px 100px 80px;
+    grid-template-columns: 100px 100px 100px 100px 80px 120px;
     gap: 0.5rem;
   }
 }
@@ -241,23 +318,15 @@
     grid-template-columns: 1fr;
   }
 
-  .table-header,
-  .despesa-row {
+  .table-header {
     display: none;
-  }
-
-  .despesa-item {
-    padding: 1rem;
-    border: 1px solid #e9ecef;
-    border-radius: 8px;
-    margin-bottom: 1rem;
   }
 
   .despesa-row {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    cursor: pointer;
+    cursor: default;
   }
 
   .despesa-cell {
@@ -265,12 +334,67 @@
     justify-content: space-between;
     padding: 0.25rem 0;
     border-bottom: 1px solid #f1f3f4;
-    background-color: transparent;
   }
 
-  .parcelas-table-header,
+  .despesa-cell::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+    color: rgb(17, 150, 105);
+  }
+
+  .despesa-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .despesa-item {
+    position: relative;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: white;
+  }
+
+  .parcelas-table-header {
+    display: none;
+  }
+
   .parcela-row {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: 0.25rem;
+  }
+
+  .parcela-cell {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #f1f3f4;
+  }
+
+  .parcela-cell::before {
+    font-weight: bold;
+    color: rgb(17, 150, 105);
+  }
+
+  .parcela-cell:nth-child(1)::before {
+    content: "Parcela: ";
+  }
+  .parcela-cell:nth-child(2)::before {
+    content: "Valor: ";
+  }
+  .parcela-cell:nth-child(3)::before {
+    content: "Vencimento: ";
+  }
+  .parcela-cell:nth-child(4)::before {
+    content: "Pagamento: ";
+  }
+  .parcela-cell:nth-child(5)::before {
+    content: "Status: ";
+  }
+  .parcela-cell:nth-child(6)::before {
+    content: "Forma Pgto: ";
   }
 }
