@@ -1,0 +1,534 @@
+.dashboard-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem;
+  min-height: calc(100vh - 80px);
+  background-color: #ffffff;
+}
+
+.dashboard-header {
+  margin-bottom: 2rem;
+}
+
+.titulo-dashboard {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: rgb(17, 150, 105);
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+}
+
+.titulo-icon {
+  color: #2a5298;
+}
+
+.dashboard-resumo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.resumo-card {
+  background-color: transparent;
+  border: 2px solid #17a2b8;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.resumo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+}
+
+.resumo-icon {
+  color: #ffd700;
+  flex-shrink: 0;
+}
+
+.resumo-label {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+  background-color: transparent;
+}
+
+.resumo-valor {
+  display: block;
+  background-color: transparent;
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: rgb(17, 150, 105)
+}
+
+.despesas-container {
+  background: rgb(94, 11, 11);
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.table-header {
+  display: grid;
+  grid-template-columns: 60px 180px 200px 120px 100px 140px 80px 120px 120px 40px;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: rgb(17, 150, 105);
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.header-cell {
+  display: flex;
+  align-items: center;
+  color: white;
+  background-color: transparent;
+}
+
+.despesa-item {
+  border-bottom: 1px solid #e9ecef;
+}
+
+.despesa-item:last-child {
+  border-bottom: none;
+}
+
+.despesa-row {
+  display: grid;
+  grid-template-columns: 60px 180px 200px 120px 100px 140px 80px 120px 120px 40px;
+  gap: 1rem;
+  padding: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  align-items: center;
+  background: white;
+}
+
+.despesa-row:hover {
+  background-color: #f8f9fa;
+}
+
+.despesa-cell {
+  font-size: 0.9rem;
+  color: #495057;
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+}
+
+.despesa-titulo {
+  font-weight: 600;
+  color: #2a5298;
+  background-color: transparent;
+}
+
+.despesa-valor {
+  font-weight: bold;
+  color: #28a745;
+}
+
+.categoria-tag {
+  background: linear-gradient(
+    135deg,
+    rgb(17, 150, 105) 0%,
+    rgb(13, 110, 80) 100%
+  );
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.forma-pagamento-tag {
+  background: linear-gradient(
+    135deg,
+    rgba(69, 109, 32, 0.829) 0%,
+    rgb(13, 110, 80) 100%
+  );
+  color: white;
+  padding: 0.25rem 0.75rem;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.parcelas-badge {
+  background: #ffd700;
+  color: #1e3c72;
+  padding: 0.25rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.despesa-toggle {
+  display: flex;
+  justify-content: center;
+  background-color: transparent;
+  align-items: center;
+  color: #2a5298;
+  cursor: pointer;
+}
+
+.parcelas-dropdown {
+  background: #f8f9fa;
+  border-top: 2px solid #e9ecef;
+}
+
+.parcelas-header {
+  padding: 1rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.parcelas-header h4 {
+  margin: 0;
+  color: rgb(17, 150, 105);
+  font-size: 1.1rem;
+}
+
+.parcelas-table {
+  padding: 1rem;
+}
+
+.parcelas-table-header {
+  display: grid;
+  white-space: nowrap;
+  grid-template-columns: 120px 120px 120px 120px 100px 140px;
+  gap: 1rem;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #495057;
+  margin-bottom: 0.5rem;
+}
+
+.parcela-row {
+  display: grid;
+  grid-template-columns: 120px 120px 120px 120px 100px 140px;
+  gap: 1rem;
+  padding: 0.75rem;
+  background: white;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+  align-items: center;
+}
+
+.parcela-row:last-child {
+  margin-bottom: 0;
+}
+
+.parcela-cell {
+  font-size: 0.85rem;
+  color: #6c757d;
+}
+
+.parcela-valor {
+  font-weight: bold;
+  color: #28a745;
+}
+
+.parcela-status {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.forma-pagamento-parcela {
+  background: rgba(23, 162, 184, 0.1);
+  color: #17a2b8;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1px solid #17a2b8;
+}
+
+/* Estados de loading, erro e vazio */
+.loading-container,
+.erro-container,
+.vazio-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  color: #666;
+}
+
+.loading-icon {
+  animation: spin 1s linear infinite;
+  color: rgb(17, 150, 105);
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.erro-container {
+  color: #dc3545;
+}
+
+.btn-tentar-novamente:hover {
+  background: rgb(13, 110, 80);
+}
+
+.vazio-container {
+  color: #888;
+}
+
+.vazio-icon {
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+/* Responsividade */
+@media (max-width: 1200px) {
+  .table-header,
+  .despesa-row {
+    grid-template-columns: 50px 150px 180px 100px 80px 120px 60px 100px 100px 30px;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .parcelas-table-header,
+  .parcela-row {
+    grid-template-columns: 100px 100px 100px 100px 80px 120px;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-container {
+    padding: 1rem;
+  }
+
+  .dashboard-resumo {
+    grid-template-columns: 1fr;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .despesa-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    cursor: default;
+  }
+
+  .despesa-cell {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #f1f3f4;
+  }
+
+  .despesa-cell::before {
+    content: attr(data-label) ": ";
+    font-weight: bold;
+    color: rgb(17, 150, 105);
+  }
+
+  .despesa-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .despesa-item {
+    position: relative;
+    padding: 1rem;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    background: white;
+  }
+
+  .parcelas-table-header {
+    display: none;
+  }
+
+  .parcela-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .parcela-cell {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.25rem 0;
+    border-bottom: 1px solid #f1f3f4;
+  }
+
+  .parcela-cell::before {
+    font-weight: bold;
+    color: rgb(17, 150, 105);
+  }
+
+  .parcela-cell:nth-child(1)::before {
+    content: "Parcela: ";
+  }
+  .parcela-cell:nth-child(2)::before {
+    content: "Valor: ";
+  }
+  .parcela-cell:nth-child(3)::before {
+    content: "Vencimento: ";
+  }
+  .parcela-cell:nth-child(4)::before {
+    content: "Pagamento: ";
+  }
+  .parcela-cell:nth-child(5)::before {
+    content: "Status: ";
+  }
+  .parcela-cell:nth-child(6)::before {
+    content: "Forma Pgto: ";
+  }
+}
+
+.dashboard-analise {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.analise-card {
+  background-color: transparent;
+  border: 2px solid #17a2b8;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analise-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+}
+
+.analise-icon {
+  color: rgb(17, 150, 105);
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.analise-content {
+  flex: 1;
+}
+
+.analise-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+  background-color: transparent; /* MANTÉM SEU ESTILO */
+}
+
+.analise-valor {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(17, 150, 105);
+  margin-bottom: 0.25rem;
+  background-color: transparent; /* MANTÉM SEU ESTILO */
+}
+
+.analise-descricao {
+  font-size: 0.85rem;
+  color: #666;
+  background-color: transparent; /* MANTÉM SEU ESTILO */
+}
+
+/* Novos elementos mantendo transparência */
+.parcelas-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: transparent;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+  background-color: transparent;
+}
+
+.resumo-geral {
+  display: flex;
+  gap: 2rem;
+  background-color: transparent;
+}
+
+.resumo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: transparent;
+}
+
+.resumo-numero {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(17, 150, 105);
+  background-color: transparent;
+}
+
+.resumo-texto {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+  background-color: transparent;
+}
+
+/* Estilos para os novos cards de resumo */
+.resumo-card.resumo-success {
+  background: transparent !important; /* TRANSPARENTE */
+  border: 2px solid #28a745; /* Borda verde */
+}
+
+.resumo-card.resumo-warning {
+  background: transparent !important; /* TRANSPARENTE */
+  border: 2px solid #17a2b8; /* Borda amarela */
+}
+
+.resumo-card.resumo-info {
+  background: transparent !important; /* TRANSPARENTE */
+  border: 2px solid #17a2b8; /* Borda azul */
+}
+
+.resumo-extra {
+  display: block;
+  font-size: 0.8rem;
+  color: white;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+  background-color: transparent;
+}

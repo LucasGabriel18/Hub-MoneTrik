@@ -5,6 +5,7 @@ using Hub.Monetrik.Domain.Notifications;
 using Hub.Monetrik.Domain.Enums.Notifications;
 using Hub.Monetrik.Mediator.Interfaces.Mediator;
 using Microsoft.AspNetCore.Mvc;
+using Hub.Monetrik.Api.Responses.Despesas;
 namespace Hub.Monetrik.Api.Controllers.Despesas
 {
     [ApiController]
@@ -48,11 +49,11 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
         }
 
         [HttpGet("buscar-despesas")]
-        public async Task<IActionResult> BuscarDespesas()
+        public async Task<ActionResult<BuscarDespesasResponse>> BuscarDespesas()
         {
-            var request = await _despesasService.GetDespesasRepository();
+            var response = await _despesasService.GetDespesasRepository();
 
-            if (request.Count == 0)
+            if (response.Count == 0)
             {
                 await _mediator.Publish(new Notification(
                     "Nenhuma despesa encontrada",
@@ -69,8 +70,7 @@ namespace Hub.Monetrik.Api.Controllers.Despesas
                 });
             }
             
-            var response = BuscarDespesasMapper.Map(request.ToList());
-            return Ok(new { success = true, data = response });
+            return Ok(new { success = true, data = BuscarDespesasMapper.Map([.. response]) });
         }
 
         [HttpGet("buscar-despesa-por-id")]

@@ -47,9 +47,7 @@ namespace Hub.Monetrik.Domain.Commands.Despesas.Cadastrar
 
             RuleFor(x => x.DataPagamento)
                 .NotEmpty()
-                .WithMessage("A data de pagamento é obrigatória")
-                .Must(data => data.Date >= DateTime.Now.Date)
-                .WithMessage("A data de pagamento deve ser igual ou maior que hoje");
+                .WithMessage("A data de pagamento é obrigatória");
 
             RuleFor(x => x.ValorParcela)
                 .NotEmpty()
