@@ -8,12 +8,12 @@ export interface ApiResponse<T> {
 }
 
 export interface ParcelaApi {
+  [x: string]: any;
   id: number;
   despesaId: number;
   numeroParcela: number;
   valorParcela: number;
   dataVencimento: string;
-  formaPagamento?: string;
   situacao: string;
 }
 

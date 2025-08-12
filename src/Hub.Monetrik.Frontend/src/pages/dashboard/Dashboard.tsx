@@ -3,24 +3,30 @@ import {
   ChevronDown,
   ChevronUp,
   CircleGauge,
-  DollarSign,
   Calendar,
   Package,
   AlertCircle,
   Loader2,
+  TrendingUp,
+  Clock,
+  CheckCircle,
+  XCircle,
+  Target,
+  BarChart3,
+  Wallet
 } from "lucide-react";
 import Navbar from "../../components/Navbar";
 import "./dash.css";
 import { despesasService } from "../../services/DespesasService";
 import { DespesasMapper, type Despesa } from "../../utils/DespesasUtils";
+import { CalculosFinanceiros, type ResumoFinanceiro } from "../../utils/CalculosFinanceiros";
 
 function Dashboard() {
   const [despesas, setDespesas] = useState<Despesa[]>([]);
   const [loading, setLoading] = useState(true);
   const [erro, setErro] = useState<string | null>(null);
-  const [despesasExpandidas, setDespesasExpandidas] = useState<Set<number>>(
-    new Set()
-  );
+  const [despesasExpandidas, setDespesasExpandidas] = useState<Set<number>>(new Set());
+  const [resumoFinanceiro, setResumoFinanceiro] = useState<ResumoFinanceiro | null>(null);
 
   const buscarDespesas = async () => {
     try {
@@ -28,11 +34,14 @@ function Dashboard() {
       setErro(null);
 
       const response = await despesasService.buscarDespesas();
-      const despesasMapeadas = DespesasMapper.mapDespesasFromApi(
-        response.despesas
-      );
-
+      const despesasMapeadas = DespesasMapper.mapDespesasFromApi(response.despesas);
+      
       setDespesas(despesasMapeadas);
+      
+      // Calcular resumo financeiro
+      const resumo = CalculosFinanceiros.calcularResumoFinanceiro(despesasMapeadas);
+      setResumoFinanceiro(resumo);
+      
     } catch (error) {
       console.error("Erro ao buscar despesas:", error);
       setErro(error instanceof Error ? error.message : "Erro desconhecido");
@@ -56,10 +65,7 @@ function Dashboard() {
   };
 
   const formatarValor = (valor: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(valor);
+    return CalculosFinanceiros.formatarValor(valor);
   };
 
   const formatarData = (data: string) => {
@@ -76,24 +82,6 @@ function Dashboard() {
       case "vencido": return "#dc3545";
       default: return "#6c757d";
     }
-  };
-
-  const calcularTotalDespesas = () => {
-    return despesas.reduce((total, despesa) => total + despesa.valorTotal, 0);
-  };
-
-  const calcularParcelasPagas = () => {
-    return despesas.reduce((total, despesa) => {
-      return total + despesa.parcelas.filter((p) => p.status === "pago").length;
-    }, 0);
-  };
-
-  const calcularParcelasPendentes = () => {
-    return despesas.reduce((total, despesa) => {
-      return (
-        total + despesa.parcelas.filter((p) => p.status === "pendente").length
-      );
-    }, 0);
   };
 
   if (loading) {
@@ -127,6 +115,8 @@ function Dashboard() {
     );
   }
 
+  if (!resumoFinanceiro) return null;
+
   return (
     <>
       <Navbar />
@@ -134,48 +124,108 @@ function Dashboard() {
         <div className="dashboard-header">
           <h1 className="titulo-dashboard">
             <CircleGauge className="titulo-icon" size={28} strokeWidth={2.25} />
-            Dashboard de Despesas
+            Dashboard Financeiro
           </h1>
 
+          {/* Cards de Resumo Principal */}
           <div className="dashboard-resumo">
             <div className="resumo-card">
-              <DollarSign className="resumo-icon" size={20} />
+              <Wallet className="resumo-icon" size={20} />
               <div>
                 <span className="resumo-label">Total de Despesas</span>
-                <span className="resumo-valor">
-                  {formatarValor(calcularTotalDespesas())}
-                </span>
+                <span className="resumo-valor">{formatarValor(resumoFinanceiro.totalDespesas)}</span>
               </div>
             </div>
 
-            <div className="resumo-card">
-              <Package className="resumo-icon" size={20} />
+            <div className="resumo-card resumo-success">
+              <CheckCircle className="resumo-icon" size={20} />
               <div>
-                <span className="resumo-label">Quantidade de Despesas</span>
-                <span className="resumo-valor">{despesas.length}</span>
+                <span className="resumo-label">Valor Pago</span>
+                <span className="resumo-valor">{formatarValor(resumoFinanceiro.totalPagas)}</span>
+                <span className="resumo-extra">{CalculosFinanceiros.formatarPercentual(resumoFinanceiro.percentualPago)}</span>
               </div>
             </div>
 
-            <div className="resumo-card">
+            <div className="resumo-card resumo-warning">
+              <XCircle className="resumo-icon" size={20} />
+              <div>
+                <span className="resumo-label">Valor em Aberto</span>
+                <span className="resumo-valor">{formatarValor(resumoFinanceiro.totalAberto)}</span>
+                <span className="resumo-extra">{resumoFinanceiro.parcelasPendentes + resumoFinanceiro.parcelasVencidas} parcelas</span>
+              </div>
+            </div>
+
+            <div className="resumo-card resumo-info">
               <Calendar className="resumo-icon" size={20} />
               <div>
-                <span className="resumo-label">Parcelas Pagas</span>
-                <span className="resumo-valor">{calcularParcelasPagas()}</span>
+                <span className="resumo-label">Gasto em {CalculosFinanceiros.obterNomeMes()}</span>
+                <span className="resumo-valor">{formatarValor(resumoFinanceiro.gastoMesAtual)}</span>
+                <span className="resumo-extra">Mês atual</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Cards de Análise Avançada */}
+          <div className="dashboard-analise">
+            <div className="analise-card">
+              <TrendingUp className="analise-icon" size={24} />
+              <div className="analise-content">
+                <h3>Projeção Anual</h3>
+                <span className="analise-valor">{formatarValor(resumoFinanceiro.projecaoAnual)}</span>
+                <span className="analise-descricao">Baseado no padrão atual</span>
               </div>
             </div>
 
-            <div className="resumo-card">
-              <Calendar className="resumo-icon" size={20} />
-              <div>
-                <span className="resumo-label">Parcelas Pendentes</span>
-                <span className="resumo-valor">
-                  {calcularParcelasPendentes()}
-                </span>
+            <div className="analise-card">
+              <BarChart3 className="analise-icon" size={24} />
+              <div className="analise-content">
+                <h3>Média Mensal</h3>
+                <span className="analise-valor">{formatarValor(resumoFinanceiro.mediaMensal)}</span>
+                <span className="analise-descricao">Histórico de gastos</span>
+              </div>
+            </div>
+
+            <div className="analise-card">
+              <Target className="analise-icon" size={24} />
+              <div className="analise-content">
+                <h3>Status das Parcelas</h3>
+                <div className="parcelas-status">
+                  <div className="status-item">
+                    <CheckCircle size={16} color="#28a745" />
+                    <span>{resumoFinanceiro.parcelasPagas} Pagas</span>
+                  </div>
+                  <div className="status-item">
+                    <Clock size={16} color="#ffc107" />
+                    <span>{resumoFinanceiro.parcelasPendentes} Pendentes</span>
+                  </div>
+                  <div className="status-item">
+                    <XCircle size={16} color="#dc3545" />
+                    <span>{resumoFinanceiro.parcelasVencidas} Vencidas</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="analise-card">
+              <Package className="analise-icon" size={24} />
+              <div className="analise-content">
+                <h3>Resumo Geral</h3>
+                <div className="resumo-geral">
+                  <div className="resumo-item">
+                    <span className="resumo-numero">{despesas.length}</span>
+                    <span className="resumo-texto">Despesas</span>
+                  </div>
+                  <div className="resumo-item">
+                    <span className="resumo-numero">{resumoFinanceiro.parcelasPagas + resumoFinanceiro.parcelasPendentes + resumoFinanceiro.parcelasVencidas}</span>
+                    <span className="resumo-texto">Parcelas</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Tabela de Despesas (mantém o código existente) */}
         <div className="despesas-container">
           {despesas.length === 0 ? (
             <div className="vazio-container">
@@ -191,7 +241,7 @@ function Dashboard() {
                 <div className="header-cell">Descrição</div>
                 <div className="header-cell">Categoria</div>
                 <div className="header-cell">Tipo</div>
-                <div className="header-cell">Forma de Pagamento</div>
+                <div className="header-cell">Forma Pagamento</div>
                 <div className="header-cell">Parcelas</div>
                 <div className="header-cell">Valor Total</div>
                 <div className="header-cell">Data Criação</div>
@@ -202,30 +252,20 @@ function Dashboard() {
                 <div key={despesa.id} className="despesa-item">
                   <div className="despesa-row">
                     <div className="despesa-cell">{despesa.id}</div>
-                    <div className="despesa-cell despesa-titulo">
-                      {despesa.titulo}
-                    </div>
+                    <div className="despesa-cell despesa-titulo">{despesa.titulo}</div>
                     <div className="despesa-cell">{despesa.descricao}</div>
                     <div className="despesa-cell">
                       <span className="categoria-tag">{despesa.categoria}</span>
                     </div>
                     <div className="despesa-cell">{despesa.tipo}</div>
                     <div className="despesa-cell">
-                      <span className="forma-pagamento-tag">
-                        {despesa.formaPagamento}
-                      </span>
+                      <span className="forma-pagamento-tag">{despesa.formaPagamento}</span>
                     </div>
                     <div className="despesa-cell">
-                      <span className="parcelas-badge">
-                        {despesa.quantidadeParcelas}x
-                      </span>
+                      <span className="parcelas-badge">{despesa.quantidadeParcelas}x</span>
                     </div>
-                    <div className="despesa-cell despesa-valor">
-                      {formatarValor(despesa.valorTotal)}
-                    </div>
-                    <div className="despesa-cell">
-                      {formatarData(despesa.dataCriacao)}
-                    </div>
+                    <div className="despesa-cell despesa-valor">{formatarValor(despesa.valorTotal)}</div>
+                    <div className="despesa-cell">{formatarData(despesa.dataCriacao)}</div>
                     <div
                       className="despesa-cell despesa-toggle"
                       onClick={() => toggleDespesa(despesa.id)}
@@ -262,13 +302,11 @@ function Dashboard() {
                             <div className="parcela-cell parcela-valor">
                               {formatarValor(parcela.valor)}
                             </div>
-                            <div className="parcela-cell">
+                            <div className="parcela-cell" title={parcela.dataVencimento}>
                               {formatarData(parcela.dataVencimento)}
                             </div>
                             <div className="parcela-cell">
-                              {parcela.dataPagamento
-                                ? formatarData(parcela.dataPagamento)
-                                : "-"}
+                              {parcela.dataPagamento ? formatarData(parcela.dataPagamento) : "-"}
                             </div>
                             <div
                               className="parcela-cell parcela-status"
@@ -278,7 +316,7 @@ function Dashboard() {
                             </div>
                             <div className="parcela-cell">
                               <span className="forma-pagamento-parcela">
-                                {parcela.formaPagamento}
+                                {parcela.formaPagamento || despesa.formaPagamento}
                               </span>
                             </div>
                           </div>

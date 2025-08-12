@@ -45,7 +45,6 @@ export const mapParcelaFromApi = (parcela: ParcelaApi): Parcela => {
     nrParcela: parcela.numeroParcela,
     valor: parcela.valorParcela,
     dataVencimento: parcela.dataVencimento,
-    formaPagamento: parcela.formaPagamento || "Não informado",
     dataPagamento: parcela.situacao === "Pago" ? parcela.dataVencimento : undefined,
     status: mapSituacaoToStatus(parcela.situacao),
     despesaId: parcela.despesaId,

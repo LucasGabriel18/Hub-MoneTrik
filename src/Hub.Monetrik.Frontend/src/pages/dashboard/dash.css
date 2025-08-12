@@ -32,14 +32,21 @@
 }
 
 .resumo-card {
-  color: rgb(0, 0, 0);
-  padding: 1.5rem;
+  background-color: transparent;
+  border: 2px solid #17a2b8;
   border-radius: 12px;
-  border-color: black;
+  padding: 1.5rem;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 1rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.resumo-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
 }
 
 .resumo-icon {
@@ -48,10 +55,10 @@
 }
 
 .resumo-label {
-  display: block;
-  font-size: 0.9rem;
-  opacity: 0.9;
-  margin-bottom: 0.25rem;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
   background-color: transparent;
 }
 
@@ -60,7 +67,7 @@
   background-color: transparent;
   font-size: 1.4rem;
   font-weight: bold;
-  color: #ffd700;
+  color: rgb(17, 150, 105)
 }
 
 .despesas-container {
@@ -397,4 +404,131 @@
   .parcela-cell:nth-child(6)::before {
     content: "Forma Pgto: ";
   }
+}
+
+.dashboard-analise {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.analise-card {
+  background-color: transparent;
+  border: 2px solid #17a2b8;
+  border-radius: 12px;
+  padding: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analise-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  background-color: transparent;
+}
+
+.analise-icon {
+  color: rgb(17, 150, 105);
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.analise-content {
+  flex: 1;
+}
+
+.analise-content h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 600;
+  background-color: transparent; /* MANTÉM SEU ESTILO */
+}
+
+.analise-valor {
+  display: block;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: rgb(17, 150, 105);
+  margin-bottom: 0.25rem;
+  background-color: transparent; /* MANTÉM SEU ESTILO */
+}
+
+.analise-descricao {
+  font-size: 0.85rem;
+  color: #666;
+  background-color: transparent; /* MANTÉM SEU ESTILO */
+}
+
+/* Novos elementos mantendo transparência */
+.parcelas-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  background-color: transparent;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #555;
+  background-color: transparent;
+}
+
+.resumo-geral {
+  display: flex;
+  gap: 2rem;
+  background-color: transparent;
+}
+
+.resumo-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: transparent;
+}
+
+.resumo-numero {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: rgb(17, 150, 105);
+  background-color: transparent;
+}
+
+.resumo-texto {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+  background-color: transparent;
+}
+
+/* Estilos para os novos cards de resumo */
+.resumo-card.resumo-success {
+  background: transparent !important; /* TRANSPARENTE */
+  border: 2px solid #28a745; /* Borda verde */
+}
+
+.resumo-card.resumo-warning {
+  background: transparent !important; /* TRANSPARENTE */
+  border: 2px solid #17a2b8; /* Borda amarela */
+}
+
+.resumo-card.resumo-info {
+  background: transparent !important; /* TRANSPARENTE */
+  border: 2px solid #17a2b8; /* Borda azul */
+}
+
+.resumo-extra {
+  display: block;
+  font-size: 0.8rem;
+  color: white;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+  background-color: transparent;
 }
